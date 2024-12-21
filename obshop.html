@@ -38,66 +38,61 @@ Simple at the moment.
 
 
 
-  <link id="theCss" rel="stylesheet" href="./goshop.css">
-  <script>
-    // alert(screen.width);
-    if (screen.width < 500) {
-      // alert("mobile");
-      // theCss.href = "./mingoshop.css";
-    }
-  </script>
+  <link id="theCss" rel="stylesheet" href="./obshop.css">
+
 
 
 </head>
 
 <script src="./obshop.js"></script>
 
-
-
-
 <body>
 
   OBSHOP
 
+
   <div id="topDiv" class="topDiv">
-
-
-    <!-- second column -->
-    <div class="goDiv col2">
-
+    <div class="goDiv">
       <div id="divItems" class="itemDiv" style="margin-top: 10px;">
         ITEM DIV
       </div>
-
-
-
-
+      <div id="divItems2" class="itemDiv" style="margin-top: 10px;">
+        ITEM DIV2
+      </div>
     </div>
-
-
   </div>
 
   <script>
+    function focusButton(e) {
+      let arr = document.getElementsByClassName("btn-item");
+      for (let i = 0; i < arr.length; i++) {
+        arr[i].classList.remove("hasFocus");
+      }
+      e.currentTarget.classList.add("hasFocus");
+
+     // obButton.test();
+    }
 
     class obObject {
       constructor(type) {  // Class constructor
-        this.type = type;  // Class body/properties
+        this._type = type;  // Class body/properties
       }
-
+      get(type) { return this._type }
     }
 
     class obButton extends obObject {
-
       constructor() {
-        super();
+        super('obButton');
         this.model = mod;
       }
+
+      static test() { alert(this.type) }
     }
 
     function getStamp() {
 
-     let x = Math.random()*10000000000;
-     x = x.toFixed(0);
+      let x = Math.random() * 10000000000;
+      x = x.toFixed(0);
       return x;
     }
 
@@ -111,9 +106,6 @@ Simple at the moment.
         this._inStock = 0;
         this._toBuy = 0;
       }
-      // set id(newId) {
-      //   this._id = newId;
-      // }
       get id() {
         return this._id;
       }
@@ -147,19 +139,54 @@ Simple at the moment.
 
     }
 
+    const Global = {
+      itemArray:[],
+      productArray:[],
+      depotArray:[],
+      superArray:[]
+    };
+
+    Global.test = "just a test";
+    Global.extra = "some extra";
+
     let a = [];
 
     for (let i = 0; i < 20; i++) {
       t = "item " + i;
       test = new item(t);
-      a.push(test);
+      Global.itemArray.push(test);
+    }
+    Global.productArray = Global.itemArray;
+
+
+
+
+    
+    function displayList(ab, theDiv, type) {
+
+      ab.forEach(item => {
+        // console.log(item.name);
+
+        let newButton = document.createElement('button');
+        theDiv.appendChild(newButton);
+
+        buttonId = "item_" + item.id;
+        newButton.id = buttonId;
+        newButton.classList.add("btn");
+        newButton.classList.add("btn-success");
+        newButton.classList.add(type);
+        newButton.innerHTML = item.name;
+
+        const element = gid(buttonId);
+        newButton.addEventListener("click", focusButton);
+      });
+
 
     }
 
-    //kedar.name = "John"
-    debugger;
- 
-    // alert(kedar._id);
+    displayList(Global.itemArray, gid("divItems"), "btn-item");
+    displayList(Global.productArray, gid("divItems2"), "btn-product");
+
 
   </script>
 
