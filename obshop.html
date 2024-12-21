@@ -52,144 +52,288 @@ Simple at the moment.
 
 
   <div id="topDiv" class="topDiv">
+
     <div class="goDiv">
-      <div id="divItems" class="itemDiv" style="margin-top: 10px;">
-        ITEM DIV
-      </div>
-      <div id="divItems2" class="itemDiv" style="margin-top: 10px;">
-        ITEM DIV2
+      <button class="bg-light goBadge" onclick="DoDeleteButton()">
+        <image src="images/trash.png" style="width:30px; height:30px">
+      </button>
+      <button class="bg-light goBadge">
+        <image src="images/plus.png" style="width:30px; height:30px">
+      </button>
+
+      <button onclick="DoUpdateButton()" class="bg-light goBadge" style="width:55px;height:55px;padding:0px">
+
+        <image src="images/ok.png" style="width:45px; height:45px">
+      </button>
+
+      <button class="bg-light goBadge" onclick="Button.itemUp()" style="float:right">
+        <image src="images/up.png" style="width:30px; height:30px">
+      </button>
+      <button class="bg-light goBadge" onclick="Button.itemDown()" style="float:left;transform: rotate(180deg);">
+        <image src="images/up.png" style="width:30px; height:30px">
+      </button>
+
+      <div style="background-color: aliceblue;margin-top: 10px;padding:6px;display:inline-flex">
+
+        <button class="bg-light goBadge" onclick="Button.itemDown()" style="float:left;transform: rotate(180deg);">
+          <image src="images/up.png" style="width:30px; height:30px">
+        </button>
+
+        <table style="width:20px">
+          <tr>
+            <td style="height:10px">Name</td>
+
+            <td style="width:100px;padding:0px;margin:0px">
+              <input id="itemName" type="text" size="10" maxlength="18" style="padding:0px;margin:2px">
+            </td>
+
+          </tr>
+
+          <tr style="padding:0px">
+            <td>in stock</td>
+            <td style="padding:0;margin-left:0px;margin-right:0px">
+
+              <button onclick="inStock.value--;UI.showAllItems()" style="margin-left:0px">-</button>
+              <input type="number" id="inStock" onclick="inStock.select()" value="0" min="-10" max="100" size="3"
+                maxlength="3" style="margin-left:0px;width:50px">
+              <button onclick="inStock.value++;DoUpdateButton();UI.showAllItems()" style="margin-left:-15px">+</button>
+
+            </td>
+
+
+
+
+          </tr>
+
+
+          <tr>
+            <td>to buy</td>
+
+            <td>
+
+              <button onclick="toBuy.value--;UI.showAllItems()" style="margin-right:-15px">-</button>
+              <input type="number" id="toBuy" onclick="toBuy.select()" value="0" min="-10" max="100" size="3"
+                maxlength="3" style="width:50px">
+              <button onclick="toBuy.value++;UI.showAllItems()" style="margin-left:-15px">+</button>
+
+          </tr>
+
+        </table>
+
+
+        <button class="goBadge" style="float:right; ">xx</button>
+
       </div>
     </div>
+
+
+    <div id="divItems"></div>
+    <div id="divProduct"></div>
+
+
   </div>
 
-  <script>
-    function focusButton(e) {
+
+</body>
+
+<!--
+
+
+
+
+
+
+
+-->
+
+<script>
+
+
+  // form to item
+  function DoUpdateButton() {
+
+    function formToArray(index) {
+      Global.itemArray[index].name = itemName.value;
+      divItems.innerHTML = "";
+      displayList(Global.itemArray, gid("divItems"), "item");
+    }
+
+
+    let arr = document.getElementsByClassName("hasFocus");
+    let selected = arr[0];
+    let id = selected.id;
+
+
+    let a = id.split("_");
+    let thisId = a[1];
+
+    for (let i = 0; i < Global.itemArray.length; i++) {
+      if (thisId == Global.itemArray[i].id) {
+        formToArray(i);
+        break;
+      }
+
+    }
+
+
+
+  }
+
+
+
+  const Global = {
+    itemArray: [],
+    productArray: [],
+    depotArray: [],
+    superArray: []
+  };
+
+
+
+  function selectButton(e) {
+
+    function buttonToForm(item) {
+      itemName.value = item.name;
+      inStock.value = item.inStock;
+      toBuy.value = item.toBuy;
+     
+    }
+
+    function getItemById(id) {
+
+      let a = id.split("_");
+      let thisId = a[1];
+      Global.itemArray.forEach
+        (item => {
+          if (item.id == thisId) {
+
+            buttonToForm(item);
+
+          }
+        });
+    }
+
+
+    function clearFocus() {
       let arr = document.getElementsByClassName("btn-item");
       for (let i = 0; i < arr.length; i++) {
         arr[i].classList.remove("hasFocus");
       }
-      e.currentTarget.classList.add("hasFocus");
+    }
+    clearFocus();
+    e.currentTarget.classList.add("hasFocus");
 
-     // obButton.test();
+    let thisId = e.currentTarget.id;
+    let thisItem = getItemById(thisId);
+
+  }
+
+  class obObject {
+    constructor(type) {  // Class constructor
+      this._type = type;  // Class body/properties
+    }
+    get(type) { return this._type }
+  }
+
+  class obButton extends obObject {
+    constructor() {
+      super('obButton');
+      this.model = mod;
     }
 
-    class obObject {
-      constructor(type) {  // Class constructor
-        this._type = type;  // Class body/properties
-      }
-      get(type) { return this._type }
+
+  }
+
+  function getStamp() {
+
+    let x = Math.random() * 10000000000;
+    x = x.toFixed(0);
+    return x;
+  }
+
+  class item {
+    constructor(name) {
+      this._id = getStamp();
+      if (!name)
+        this._name = "unknown";
+      else this._name = name;
+      this._description = "unknown";
+      this._inStock = 0;
+      this._toBuy = 0;
+    }
+    get id() {
+      return this._id;
+    }
+    set name(newName) {
+      this._name = newName
+    }
+    get name() {
+      return this._name;
+    }
+    set name(newName) {
+      this._name = newName
+    }
+    get description() {
+      return this._description;
+    }
+    set description(newDescription) {
+      this._description = newDescription;
+    }
+    get inStock() {
+      return this._inStock;
+    }
+    set inStock(newInStock) {
+      this._inStock = newInStock;
+    }
+    get toBuy() {
+      return this._toBuy;
+    }
+    set toBuy(newToBuy) {
+      this._to_buy = newToBuy;;
     }
 
-    class obButton extends obObject {
-      constructor() {
-        super('obButton');
-        this.model = mod;
-      }
-
-      static test() { alert(this.type) }
-    }
-
-    function getStamp() {
-
-      let x = Math.random() * 10000000000;
-      x = x.toFixed(0);
-      return x;
-    }
-
-    class item {
-      constructor(name) {
-        this._id = getStamp();
-        if (!name)
-          this._name = "unknown";
-        else this._name = name;
-        this._description = "unknown";
-        this._inStock = 0;
-        this._toBuy = 0;
-      }
-      get id() {
-        return this._id;
-      }
-      set name(newName) {
-        this._name = newName
-      }
-      get name() {
-        return this._name;
-      }
-      set name(newName) {
-        this._name = newName
-      }
-      get description() {
-        return this._description;
-      }
-      set description(newDescription) {
-        this._description = newDescription;
-      }
-      get inStock() {
-        return this._inStock;
-      }
-      set inStock(newInStock) {
-        this._inStock = newInStock;
-      }
-      get toBuy() {
-        return this._toBuy;
-      }
-      set toBuy(newToBuy) {
-        this._to_buy = newToBuy;;
-      }
-
-    }
-
-    const Global = {
-      itemArray:[],
-      productArray:[],
-      depotArray:[],
-      superArray:[]
-    };
-
-    Global.test = "just a test";
-    Global.extra = "some extra";
-
-    let a = [];
-
-    for (let i = 0; i < 20; i++) {
-      t = "item " + i;
-      test = new item(t);
-      Global.itemArray.push(test);
-    }
-    Global.productArray = Global.itemArray;
+  }
 
 
 
 
-    
-    function displayList(ab, theDiv, type) {
+  let a = [];
 
-      ab.forEach(item => {
-        // console.log(item.name);
+  for (let i = 0; i < 20; i++) {
+    t = "item " + i;
+    test = new item(t);
+    Global.itemArray.push(test);
+  }
+  Global.productArray = Global.itemArray;
 
-        let newButton = document.createElement('button');
-        theDiv.appendChild(newButton);
+  function displayList(ab, theDiv, type) {
 
-        buttonId = "item_" + item.id;
-        newButton.id = buttonId;
-        newButton.classList.add("btn");
-        newButton.classList.add("btn-success");
-        newButton.classList.add(type);
-        newButton.innerHTML = item.name;
+    ab.forEach(item => {
+      // console.log(item.name);
 
-        const element = gid(buttonId);
-        newButton.addEventListener("click", focusButton);
-      });
+      let newButton = document.createElement('button');
+      theDiv.appendChild(newButton);
+
+      buttonId = type + "_" + item.id;
+      newButton.id = buttonId;
+      newButton.classList.add("btn");
+      newButton.classList.add("btn-success");
+      newButton.classList.add("btn-" + type);
+      newButton.innerHTML = item.name;
+
+      const element = gid(buttonId);
+      newButton.addEventListener("click", selectButton);
+
+    });
 
 
-    }
+  }
 
-    displayList(Global.itemArray, gid("divItems"), "btn-item");
-    displayList(Global.productArray, gid("divItems2"), "btn-product");
+  displayList(Global.itemArray, gid("divItems"), "item");
+  displayList(Global.productArray, gid("divProduct"), "product");
 
 
-  </script>
+</script>
 
-</body>
 
 </html>

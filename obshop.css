@@ -1,3 +1,11 @@
+.topDiv {
+
+  height: 700px; 
+  text-align: center;
+
+  margin: auto;
+}
+ 
  .goDiv {
    background-color: darkgray;
    border: 1px inset lightblue;
@@ -13,22 +21,18 @@
 
  .btn-item{
   display:block;
-  width:50%;
-  margin:5px;
+  width:100%;
+  margin:auto;
+  margin-top:10px;
  }
+
  .btn-product{
   display:block;
-  width:50%;
-  margin:5px;
-  background-color: #790817;
- }
-
- .topDiv {
-
-   height: 700px; 
-   text-align: center;
-
-   margin: auto;
+  width:100%;
+  margin:auto;
+  margin-top:10px;
+  color:black;
+  background-color: pink;
  }
 
  .itemDiv {
@@ -86,33 +90,6 @@
    margin-top: 0px
  }
 
- .col1 {
-   display: block;
-
-   margin: auto;
- }
-
- .col2 {
-   display: block;
-
-   margin: auto;
- }
-
- .col3 {
-   display: block;
-   height: 400px;
-
-   margin: auto;
- }
-
- .bc-button {
-   margin: auto;
-   display: block;
-   width: 100%;
-   margin-top: 10px;
-
- }
-
  body {
    width: 100%;
    padding: 0px;
@@ -120,8 +97,8 @@
  }
 
  .hasFocus {
-   border: 5px outset purple;
- 
+   border: 5px outset black;
+   transform: scaleY(1.05);
  }
 
  .bigbtn {
