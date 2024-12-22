@@ -14,7 +14,7 @@ Simple at the moment.
 1. Move item up or down in list.
 2. Make a stock buy position update thing.
 
- 
+
 -->
 
 
@@ -44,7 +44,7 @@ Simple at the moment.
 
 </head>
 
- 
+
 
 <body>
 
@@ -66,10 +66,10 @@ Simple at the moment.
         <image src="images/ok.png" style="width:45px; height:45px">
       </button>
 
-      <button class="bg-light goBadge" onclick="Button.itemUp()" style="float:right">
+      <button class="bg-light goBadge" onclick="itemUp()" style="float:right">
         <image src="images/up.png" style="width:30px; height:30px">
       </button>
-      <button class="bg-light goBadge" onclick="Button.itemDown()" style="float:left;transform: rotate(180deg);">
+      <button class="bg-light goBadge" onclick="itemDown()" style="float:left;transform: rotate(180deg);">
         <image src="images/up.png" style="width:30px; height:30px">
       </button>
 
@@ -84,7 +84,8 @@ Simple at the moment.
             <td style="height:10px">Name</td>
 
             <td style="width:100px;padding:0px;margin:0px">
-              <input id="itemName" oninput="DoUpdateButton()" type="text" size="10" maxlength="18" style="padding:0px;margin:2px">
+              <input id="itemName" oninput="DoUpdateButton()" type="text" size="10" maxlength="18"
+                style="padding:0px;margin:2px">
             </td>
 
           </tr>
@@ -145,9 +146,9 @@ Simple at the moment.
 -->
 
 <script>
-function gid(id) {
-  return document.getElementById(id);
-}
+  function gid(id) {
+    return document.getElementById(id);
+  }
   function getFocusId() {
     let arr = document.getElementsByClassName("hasFocus");
     if (!arr.length) return null;
@@ -156,6 +157,30 @@ function gid(id) {
 
     let a = id.split("_");
     return a[1];
+  }
+
+  function getIndexById(thisId) {
+
+    for (let i = 0; i < Global.itemArray.length; i++) {
+      if (thisId == Global.itemArray[i].id) {
+        return i;
+        break;
+      }
+    }
+
+  }
+
+  function DoDeleteButton() {
+    let itBe;
+    if (itBe = getFocusId()) {
+      Global.itemArray.splice(getIndexById(itBe), 1);
+      clearFocus();
+      displayList(Global.itemArray, gid("divItems"), "item");
+
+      itemName.value = "";
+      toBuy.value = 0;
+      inStock.value = 0;
+    }
   }
 
   // form to item
@@ -180,7 +205,45 @@ function gid(id) {
 
   }
 
+  function itemUp() {
 
+    let id = getFocusId();
+
+    let idx = getIndexById(id);
+
+    if (!idx) return;
+    let thisItemIndex = Global.itemArray[idx];
+
+    Global.itemArray[idx] = Global.itemArray[idx - 1];
+    Global.itemArray[idx - 1] = thisItemIndex;
+
+    clearFocus();
+
+    displayList(Global.itemArray, gid("divItems"), "item");
+
+    (gid("item_" + id)).classList.add('hasFocus');
+
+  }
+
+  function itemDown() {
+
+    let id = getFocusId();
+
+    let idx = getIndexById(id);
+
+    if (idx + 1 == Global.itemArray.length) return;
+    let thisItemIndex = Global.itemArray[idx];
+
+    Global.itemArray[idx] = Global.itemArray[idx + 1];
+    Global.itemArray[idx + 1] = thisItemIndex;
+ 
+    
+    clearFocus();
+
+    displayList(Global.itemArray, gid("divItems"), "item");
+
+    (gid("item_" + id)).classList.add('hasFocus');
+  }
 
   const Global = {
     itemArray: [],
@@ -189,7 +252,12 @@ function gid(id) {
     superArray: []
   };
 
-
+  function clearFocus() {
+    let arr = document.getElementsByClassName("btn-item");
+    for (let i = 0; i < arr.length; i++) {
+      arr[i].classList.remove("hasFocus");
+    }
+  }
 
   function selectButton(e) {
 
@@ -214,12 +282,7 @@ function gid(id) {
         });
     }
 
-    function clearFocus() {
-      let arr = document.getElementsByClassName("btn-item");
-      for (let i = 0; i < arr.length; i++) {
-        arr[i].classList.remove("hasFocus");
-      }
-    }
+
     clearFocus();
     e.currentTarget.classList.add("hasFocus");
 
@@ -306,7 +369,7 @@ function gid(id) {
   Global.productArray = Global.itemArray;
 
   function displayList(a, theDiv, type) {
- 
+
     let focus = getFocusId();
     divItems.innerHTML = "";
     a.forEach(item => {
@@ -320,25 +383,24 @@ function gid(id) {
       newButton.classList.add("btn");
       newButton.classList.add("btn-success");
       newButton.classList.add("btn-" + type);
-      newButton.innerHTML = item.name +  `<span class="badge bg-primary inBadge" style="float:left">`
-         + item.inStock  + `</span><span class="badge bg-primary inBadge" style="float:right">` + item.toBuy + `</span>`
+      newButton.innerHTML = item.name + `<span class="badge bg-primary inBadge" style="float:left">`
+        + item.inStock + `</span><span class="badge bg-primary inBadge" style="float:right">` + item.toBuy + `</span>`
 
       const element = gid(buttonId);
       newButton.addEventListener("click", selectButton);
 
     });
 
-    if (id = focus) {
-      gid("item_" + focus).classList.add("hasFocus");
-
+    if (focus) {
+      (gid("item_" + focus)).classList.add("hasFocus");
     }
   }
 
   //buttonColor = `btn btn-success`;
- 
 
- 
- const x = Global.itemArray;
+
+
+  const x = Global.itemArray;
 
   displayList(Global.itemArray, gid("divItems"), "item");
 
