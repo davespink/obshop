@@ -44,7 +44,7 @@ Simple at the moment.
 
 </head>
 
-<script src="./obshop.js"></script>
+ 
 
 <body>
 
@@ -84,7 +84,7 @@ Simple at the moment.
             <td style="height:10px">Name</td>
 
             <td style="width:100px;padding:0px;margin:0px">
-              <input id="itemName" type="text" size="10" maxlength="18" style="padding:0px;margin:2px">
+              <input id="itemName" oninput="DoUpdateButton()" type="text" size="10" maxlength="18" style="padding:0px;margin:2px">
             </td>
 
           </tr>
@@ -93,10 +93,10 @@ Simple at the moment.
             <td>in stock</td>
             <td style="padding:0;margin-left:0px;margin-right:0px">
 
-              <button onclick="inStock.value--;UI.showAllItems()" style="margin-left:0px">-</button>
+              <button onclick="inStock.value--;DoUpdateButton()" style="margin-left:0px">-</button>
               <input type="number" id="inStock" onclick="inStock.select()" value="0" min="-10" max="100" size="3"
                 maxlength="3" style="margin-left:0px;width:50px">
-              <button onclick="inStock.value++;DoUpdateButton();UI.showAllItems()" style="margin-left:-15px">+</button>
+              <button onclick="inStock.value++;DoUpdateButton()" style="margin-left:-15px">+</button>
 
             </td>
 
@@ -111,10 +111,10 @@ Simple at the moment.
 
             <td>
 
-              <button onclick="toBuy.value--;UI.showAllItems()" style="margin-right:-15px">-</button>
+              <button onclick="toBuy.value--;DoUpdateButton()" style="margin-right:-15px">-</button>
               <input type="number" id="toBuy" onclick="toBuy.select()" value="0" min="-10" max="100" size="3"
                 maxlength="3" style="width:50px">
-              <button onclick="toBuy.value++;UI.showAllItems()" style="margin-left:-15px">+</button>
+              <button onclick="toBuy.value++;DoUpdateButton()" style="margin-left:-15px">+</button>
 
           </tr>
 
@@ -125,8 +125,6 @@ Simple at the moment.
 
       </div>
     </div>
-
-
     <div id="divItems"></div>
     <div id="divProduct"></div>
 
@@ -147,35 +145,38 @@ Simple at the moment.
 -->
 
 <script>
+function gid(id) {
+  return document.getElementById(id);
+}
+  function getFocusId() {
+    let arr = document.getElementsByClassName("hasFocus");
+    if (!arr.length) return null;
+    let selected = arr[0];
+    let id = selected.id;
 
+    let a = id.split("_");
+    return a[1];
+  }
 
   // form to item
   function DoUpdateButton() {
 
     function formToArray(index) {
       Global.itemArray[index].name = itemName.value;
-      divItems.innerHTML = "";
+      Global.itemArray[index].inStock = inStock.value;
+      Global.itemArray[index].toBuy = toBuy.value;
+
       displayList(Global.itemArray, gid("divItems"), "item");
     }
 
-
-    let arr = document.getElementsByClassName("hasFocus");
-    let selected = arr[0];
-    let id = selected.id;
-
-
-    let a = id.split("_");
-    let thisId = a[1];
+    let thisId = getFocusId();
 
     for (let i = 0; i < Global.itemArray.length; i++) {
       if (thisId == Global.itemArray[i].id) {
         formToArray(i);
         break;
       }
-
     }
-
-
 
   }
 
@@ -196,7 +197,7 @@ Simple at the moment.
       itemName.value = item.name;
       inStock.value = item.inStock;
       toBuy.value = item.toBuy;
-     
+
     }
 
     function getItemById(id) {
@@ -212,7 +213,6 @@ Simple at the moment.
           }
         });
     }
-
 
     function clearFocus() {
       let arr = document.getElementsByClassName("btn-item");
@@ -289,26 +289,27 @@ Simple at the moment.
       return this._toBuy;
     }
     set toBuy(newToBuy) {
-      this._to_buy = newToBuy;;
+      this._toBuy = newToBuy;;
     }
 
   }
-
-
-
 
   let a = [];
 
   for (let i = 0; i < 20; i++) {
     t = "item " + i;
     test = new item(t);
-    Global.itemArray.push(test);
+    Global.itemArray.push(test); // the working array
   }
+
+
   Global.productArray = Global.itemArray;
 
-  function displayList(ab, theDiv, type) {
-
-    ab.forEach(item => {
+  function displayList(a, theDiv, type) {
+ 
+    let focus = getFocusId();
+    divItems.innerHTML = "";
+    a.forEach(item => {
       // console.log(item.name);
 
       let newButton = document.createElement('button');
@@ -319,18 +320,27 @@ Simple at the moment.
       newButton.classList.add("btn");
       newButton.classList.add("btn-success");
       newButton.classList.add("btn-" + type);
-      newButton.innerHTML = item.name;
+      newButton.innerHTML = item.name +  `<span class="badge bg-primary inBadge" style="float:left">`
+         + item.inStock  + `</span><span class="badge bg-primary inBadge" style="float:right">` + item.toBuy + `</span>`
 
       const element = gid(buttonId);
       newButton.addEventListener("click", selectButton);
 
     });
 
+    if (id = focus) {
+      gid("item_" + focus).classList.add("hasFocus");
 
+    }
   }
 
+  //buttonColor = `btn btn-success`;
+ 
+
+ 
+ const x = Global.itemArray;
+
   displayList(Global.itemArray, gid("divItems"), "item");
-  displayList(Global.productArray, gid("divProduct"), "product");
 
 
 </script>
