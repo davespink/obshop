@@ -11,8 +11,9 @@ Here it is, obShop
 
 Simple at the moment.
 
-1. Move item up or down in list.
-2. Make a stock buy position update thing.
+1. Add new
+2. Ordering a-z most used
+3. user selection ( default )
 
 
 -->
@@ -58,7 +59,7 @@ Simple at the moment.
         <image src="images/trash.png" style="width:30px; height:30px">
       </button>
       <button class="bg-light goBadge">
-        <image src="images/plus.png" style="width:30px; height:30px">
+        <image src="images/plus.png" onclick="DoNewButton()" style="width:30px; height:30px">
       </button>
 
       <button onclick="DoUpdateButton()" class="bg-light goBadge" style="width:55px;height:55px;padding:0px">
@@ -183,16 +184,19 @@ Simple at the moment.
     }
   }
 
+
+
+  function formToArray(index) {
+    Global.itemArray[index].name = itemName.value;
+    Global.itemArray[index].inStock = inStock.value;
+    Global.itemArray[index].toBuy = toBuy.value;
+
+    displayList(Global.itemArray, gid("divItems"), "item");
+  }
+
   // form to item
   function DoUpdateButton() {
 
-    function formToArray(index) {
-      Global.itemArray[index].name = itemName.value;
-      Global.itemArray[index].inStock = inStock.value;
-      Global.itemArray[index].toBuy = toBuy.value;
-
-      displayList(Global.itemArray, gid("divItems"), "item");
-    }
 
     let thisId = getFocusId();
 
@@ -202,6 +206,23 @@ Simple at the moment.
         break;
       }
     }
+
+  }
+
+  function DoNewButton() {
+
+    newItem = new (item);
+
+    newItem.name = "newItem";
+    Global.itemArray.unshift(newItem);
+
+    buttonToForm(newItem);
+
+    displayList(Global.itemArray, gid("divItems"), "item");
+
+    (gid("item_" + newItem.id)).classList.add('hasFocus');
+
+ 
 
   }
 
@@ -236,8 +257,8 @@ Simple at the moment.
 
     Global.itemArray[idx] = Global.itemArray[idx + 1];
     Global.itemArray[idx + 1] = thisItemIndex;
- 
-    
+
+
     clearFocus();
 
     displayList(Global.itemArray, gid("divItems"), "item");
@@ -259,14 +280,14 @@ Simple at the moment.
     }
   }
 
-  function selectButton(e) {
-
-    function buttonToForm(item) {
+  function buttonToForm(item) {
       itemName.value = item.name;
       inStock.value = item.inStock;
       toBuy.value = item.toBuy;
 
     }
+
+  function selectButton(e) {
 
     function getItemById(id) {
 
