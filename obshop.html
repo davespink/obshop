@@ -221,8 +221,8 @@ Simple at the moment.
 
   function DoNewButton() {
 
-    newItem = new (item);
-
+    newItem = Object.create(item);
+    newItem.id = getStamp();
     newItem.name = "new item";
     Global.itemArray.unshift(newItem);
 
@@ -354,6 +354,7 @@ Simple at the moment.
     return x;
   }
 
+  /*
   class item {
     constructor(name) {
       this._id = getStamp();
@@ -396,12 +397,29 @@ Simple at the moment.
     }
 
   }
+*/
+
+ const item = {
+    id:"0",
+    name: "unknown",
+    description:"unknown",
+    inStock: "0",
+    toBuy:"0"
+  }
+
+
+ 
+
 
   let a = [];
 
   for (let i = 0; i < 20; i++) {
-    t = "item " + i;
-    test = new item(t);
+    test = Object.create(item);
+    test.id = getStamp();
+    test.name = "item " + i;
+    test.description = "";
+    test.inStock = "0";
+    test.toBuy = "0";
     Global.itemArray.push(test); // the working array
   }
 
@@ -478,7 +496,7 @@ Simple at the moment.
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.onload = function () {
 
-      let json =  this.responseText;
+      let json = this.responseText;
       Global.itemArray = JSON.parse(json);
 
       displayList(Global.itemArray, gid("divItems"), "item");
