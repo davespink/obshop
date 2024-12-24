@@ -49,11 +49,13 @@ Simple at the moment.
 
 <body>
 
-  OBSHOP
+  OBSHOP 1.0a
 
 
-  <div id="topDiv" class="topDiv">
 
+  <div id="topDiv" class="topDiv fixed">
+    <button onclick="saveToDisk()">save to disk</button>
+    <button onclick="loadFromDisk()">load from disk</button>
     <div class="goDiv">
       <button class="bg-light goBadge" onclick="DoDeleteButton()">
         <image src="images/trash.png" style="width:30px; height:30px">
@@ -74,56 +76,48 @@ Simple at the moment.
         <image src="images/up.png" style="width:30px; height:30px">
       </button>
 
-      <div style="background-color: aliceblue;margin-top: 10px;padding:6px;display:inline-flex">
+      <div class="inputDiv">
 
-        <button class="bg-light goBadge" onclick="Button.itemDown()" style="float:left;transform: rotate(180deg);">
-          <image src="images/up.png" style="width:30px; height:30px">
-        </button>
 
-        <table style="width:20px">
+        <table style="margin:auto;width:80%">
           <tr>
-            <td style="height:10px">Name</td>
+            <td>Name</td>
 
-            <td style="width:100px;padding:0px;margin:0px">
-              <input id="itemName" oninput="DoUpdateButton()" type="text" size="10" maxlength="18"
-                style="padding:0px;margin:2px">
+            <td>
+              <input id="itemName" oninput="DoUpdateButton()" type="text" size="10" maxlength="18">
             </td>
 
           </tr>
 
-          <tr style="padding:0px">
+          <tr>
             <td>in stock</td>
-            <td style="padding:0;margin-left:0px;margin-right:0px">
+            <td>
 
-              <button onclick="inStock.value--;DoUpdateButton()" style="margin-left:0px">-</button>
+              <button onclick="inStock.value--;DoUpdateButton()" style="margin-left:10px">-</button>
               <input type="number" id="inStock" onclick="inStock.select()" value="0" min="-10" max="100" size="3"
-                maxlength="3" style="margin-left:0px;width:50px">
-              <button onclick="inStock.value++;DoUpdateButton()" style="margin-left:-15px">+</button>
+                maxlength="3">
+              <button onclick="inStock.value++;DoUpdateButton()">+</button>
 
             </td>
-
-
-
-
           </tr>
-
 
           <tr>
             <td>to buy</td>
-
             <td>
+              <div style="display:flexbox;">
+                <button onclick="toBuy.value--;DoUpdateButton()" style="margin-left:10px">-</button>
+                <input type="number" id="toBuy" onclick="toBuy.select()" value="0" min="-10" max="100" size="3"
+                  maxlength="3">
+                <button onclick="toBuy.value++;DoUpdateButton()">+</button>
+              </div>
 
-              <button onclick="toBuy.value--;DoUpdateButton()" style="margin-right:-15px">-</button>
-              <input type="number" id="toBuy" onclick="toBuy.select()" value="0" min="-10" max="100" size="3"
-                maxlength="3" style="width:50px">
-              <button onclick="toBuy.value++;DoUpdateButton()" style="margin-left:-15px">+</button>
-
+            </td>
           </tr>
 
         </table>
 
 
-        <button class="goBadge" style="float:right; ">xx</button>
+
 
       </div>
     </div>
@@ -146,7 +140,18 @@ Simple at the moment.
 
 -->
 
+
+
 <script>
+
+  const Alert = {
+    show(message) {
+      alertText.innerHTML = "<h3>" + message + "</h3>";
+      alertBox.classList.add("animate");
+    },
+
+  }
+
   function gid(id) {
     return document.getElementById(id);
   }
@@ -199,6 +204,11 @@ Simple at the moment.
 
 
     let thisId = getFocusId();
+    if (!thisId) {
+      alert("select an item, or click + in menu");
+      return;
+    }
+
 
     for (let i = 0; i < Global.itemArray.length; i++) {
       if (thisId == Global.itemArray[i].id) {
@@ -213,24 +223,29 @@ Simple at the moment.
 
     newItem = new (item);
 
-    newItem.name = "newItem";
+    newItem.name = "new item";
     Global.itemArray.unshift(newItem);
 
     buttonToForm(newItem);
 
     displayList(Global.itemArray, gid("divItems"), "item");
 
+    clearFocus();
     (gid("item_" + newItem.id)).classList.add('hasFocus');
 
- 
+    alert("added a new item");
 
   }
 
   function itemUp() {
 
     let id = getFocusId();
+    if (!id) {
+      alert("select an item, or select + in menu");
+      return;
+    }
 
-    let idx = getIndexById(id);
+    idx = getIndexById(id);
 
     if (!idx) return;
     let thisItemIndex = Global.itemArray[idx];
@@ -249,6 +264,10 @@ Simple at the moment.
   function itemDown() {
 
     let id = getFocusId();
+    if (!id) {
+      alert("select an item, or select + to add a new item");
+      return;
+    }
 
     let idx = getIndexById(id);
 
@@ -281,11 +300,11 @@ Simple at the moment.
   }
 
   function buttonToForm(item) {
-      itemName.value = item.name;
-      inStock.value = item.inStock;
-      toBuy.value = item.toBuy;
+    itemName.value = item.name;
+    inStock.value = item.inStock;
+    toBuy.value = item.toBuy;
 
-    }
+  }
 
   function selectButton(e) {
 
@@ -425,6 +444,49 @@ Simple at the moment.
 
   displayList(Global.itemArray, gid("divItems"), "item");
 
+  const gItemArray = [];
+
+
+  function saveToDisk() {
+    const theData = JSON.stringify(Global.itemArray);
+
+    const xhttp = new XMLHttpRequest();
+    var req = "savetodisk.php";
+    // let user = User.get();
+    //if (user)
+
+    user = "TESTUSER";
+    req += "?filename=" + "autosave_" + user + ".txt";
+    ///alert(user + ' save');
+    xhttp.open("POST", req);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.onload = function () {
+      alert("done save");
+    }
+    xhttp.send("data=" + theData);
+  }
+
+
+  function loadFromDisk() {
+
+    const xhttp = new XMLHttpRequest();
+    let req = "loadfromdisk.php";
+    let user = "TESTUSER";
+
+    req += "?filename=" + "autosave_" + user + ".txt";
+    xhttp.open("POST", req);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.onload = function () {
+
+      let json =  this.responseText;
+      Global.itemArray = JSON.parse(json);
+
+      displayList(Global.itemArray, gid("divItems"), "item");
+      alert("done load from disk ");
+
+    }
+    xhttp.send();
+  }
 
 </script>
 

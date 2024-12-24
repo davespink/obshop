@@ -443,7 +443,7 @@ const Disk = {
     const theData = JSON.stringify(gItemArray);
 
     const xhttp = new XMLHttpRequest();
-    var req = "savedatatodisk.php";
+    var req = "savetodisk.php";
     let user = User.get();
     // if (user)
     //  req += "?user=" + user;
@@ -460,7 +460,7 @@ const Disk = {
 
     //debugger;
     const xhttp = new XMLHttpRequest();
-    let req = "loaduserdatafromdisk.php";
+    let req = "loadfromdisk.php";
     let user = User.get();
     //   alert(user);
     // if (user)
