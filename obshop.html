@@ -16,6 +16,72 @@ Simple at the moment.
 3. user selection ( default )
 
 
+Primary (btn-primary): rgb(13, 110, 253) - from --bs-primary-rgb.
+Secondary (btn-secondary): rgb(108, 117, 125) - from --bs-secondary-rgb.
+Success (btn-success): rgb(25, 135, 84) - from --bs-success-rgb.
+Info (btn-info): rgb(13, 202, 240) - from --bs-info-rgb.
+Warning (btn-warning): rgb(255, 193, 7) - from --bs-warning-rgb.
+Danger (btn-danger): rgb(220, 53, 69) - from --bs-danger-rgb.
+Light (btn-light): rgb(248, 249, 250) - from --bs-light-rgb.
+Dark (btn-dark): rgb(33, 37, 41) - from --bs-dark-rgb.
+Link (btn-link): This doesn't have a specific RGB background; 
+
+it's styled to look like a hyperlink by default. However, 
+if you're looking at the text color, it uses --bs-link-color 
+which is typically --bs-body-color (rgb(33, 37, 41)).
+
+
+
+
+
+
+
+Yes, there are several algorithms and methods to determine a complementary color for text that ensures readability against a given background color. Here’s a comprehensive overview based on common practices and referenced sources:
+
+Basic Concepts:
+Contrast Ratios: The Web Content Accessibility Guidelines (WCAG) provide standards for contrast ratios to ensure text readability, particularly for those with low vision or color blindness. A contrast ratio of at least 4.5:1 is recommended for normal text, with 3:1 for larger text.
+Luminance and Lightness: Human perception of color contrast often depends more on lightness (or luminance) than hue. Algorithms often calculate the perceived brightness of colors to decide text color.
+
+Common Algorithms:
+Luminance-Based Method:
+Formula: 
+Convert RGB values to luminance using the formula: luminance = 0.299*R + 0.587*G + 0.114*B where R, G, and B are the normalized values (0 to 1).
+If the background's luminance is high, use a dark text color (like black); if low, use a light color (like white).
+Simple Implementation: 
+python
+def contrasting_text_color(hex_color):
+    r, g, b = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+    luminance = (0.299*r + 0.587*g + 0.114*b) / 255
+    return '#000000' if luminance > 0.5 else '#FFFFFF'
+This approach is simplistic but often effective for ensuring readability.
+
+
+
+Complementary Color Calculation:
+While not always the best for readability, complementary colors can be calculated by inverting the RGB values (255 - color_value).
+ However, this might not yield the best contrast for readability:
+Example: For RGB(255, 0, 0), the complement would be RGB(0, 255, 255), which might not be ideal for background colors with medium brightness.
+
+Contrast Checker Tools and Algorithms:
+Tools like Contrast-Finder use algorithms to suggest colors with sufficient contrast. 
+They can modify one color based on WCAG standards until a valid contrast is achieved.
+
+Advanced Techniques:
+APCA (Advanced Perceptual Contrast Algorithm): More accurate than WCAG 2.1 contrast calculations for readability,
+considering more aspects of human color perception. However, implementation requires understanding of more complex color theory and isn't as straightforward for quick application.
+
+HSL (Hue, Saturation, Lightness) Method:
+Convert the background color to HSL, then use the lightness value to decide if text should be dark or light. 
+If the background's lightness (L) is very high or very low, you can choose black or white text respectively.
+ For mid-range lightnesses, you might need to adjust based on specific contrast needs.
+
+
+Considerations:
+Color Blindness: Ensure the chosen text color contrasts with the background for different types of color vision deficiencies.
+Context: Text size, font weight, and surrounding colors can influence what appears readable.
+
+Implementing these algorithms in a real-world application would involve converting between color models
+ (like RGB to HSL or to a perceived luminance model) and potentially adjusting based on empirical testing or user feedback to ensure practical readability.
 -->
 
 
@@ -40,13 +106,19 @@ Simple at the moment.
 </head>
 
 <body>
-  <p id="version" style="padding:0px;margin:0px"> </p><button id="alertBox" class="alert" onClick="alertBox.style.display='none';">
+  <p id="version" style="padding:0px;margin:0px"> </p>
+
+  <button id="alertBox" class="banner" onClick="alertBox.style.display='none';">
     <p id="alertText" class="center">some text</p>
   </button>
 
   <div id="topDiv" class="topDiv fixed">
     <button class="test" onclick="saveToDisk()">save to disk</button>
     <button class="test" onclick="loadFromDisk()">load from disk</button>
+
+
+
+
     <div class="goDiv">
       <button class="bg-light goBadge" onclick="DoDeleteButton()">
         <image src="images/trash.png" style="width:30px; height:30px">
@@ -67,8 +139,12 @@ Simple at the moment.
         <image src="images/up.png" style="width:30px; height:30px">
       </button>
 
-      <div class="inputDiv">
 
+
+
+
+
+      <div class="inputDiv">
         <table style="margin:auto;width:80%">
           <tr>
             <td>Name</td>
@@ -106,8 +182,25 @@ Simple at the moment.
 
       </div>
     </div>
+
+
+    <div class="dropdown" style="padding-bottom:19px">
+      <button type="button" class="btn btn-primary dropdown-toggle btn-item" style="width:90%;padding-bottom: 10px;"
+        data-bs-toggle="dropdown">
+        Select list type
+      </button>
+      <ul class="dropdown-menu" style="width:90%;background-color:transparent;  padding-top: 0px;  padding-bottom: 0px;  text-align: center;border: none">
+        <li><a class="dropdown-item" style="background-color:rgb(25, 135, 84);border-radius: 10px;" href="#">
+            <span style="color:white">Products</span></a></li>
+        <li><a class="dropdown-item" style="background-color:rgb(13, 110, 253);border-radius: 10px;" href="#">
+            <span style="color:white">Shops</span> </a></li>
+        <li><a class="dropdown-item" style="background-color:rgb(33, 37, 41);border-radius: 10px;" href="#" onclick="alert()"> <span
+              style="color:white">Catagories</span></a></li>
+      </ul>
+    </div>
+
     <div id="divItems"></div>
-    <div id="divProduct"></div>
+
 
 
   </div>
