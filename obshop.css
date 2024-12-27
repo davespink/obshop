@@ -3,13 +3,17 @@ body{
   padding:5px;
  
 }
+.test{
 
+  display:none;
+}
 .topDiv {
 
   height: 500px;
   text-align: center;
 width:95%;
   margin-left:10px;
+  margin-top: 0px;
 }
 
 .goDiv {
@@ -30,11 +34,12 @@ width:95%;
   background-color: beige;
   text-align: center;
   margin: auto;
+  margin-bottom: 2px;
   border: 1px inset lightblue;
   outline: 1px solid grey;
   box-shadow: 0 0 0 1px darkgray;
   border-radius: 10px;
-  height:200px;
+  height:fit-content;
 }
 
 .btn-item {
@@ -58,6 +63,8 @@ width:95%;
   height: 350px;
   overflow-y: auto;
   padding: 30px;
+  padding-top: 2px;
+ 
 }
 
 
@@ -65,16 +72,14 @@ table,
 th,
 tr,
 td {
-
   border: none;
   font-weight: 400;
   font-size: large;
   margin-left: 10%;
   margin-right: 30%;
-  padding: 10px;
-  margin: 2px;
-  text-align: left;
-
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
 }
 
 .small-button {
@@ -93,20 +98,14 @@ td {
 }
 
 .fixed {
-
   position:fixed;
-
 }
 
 
-label {
-  display: block;
-  margin: 5px;
-}
 
 input,
 label {
-  margin: 10px;
+  margin: 5px;
 }
 
 #panelIntro {
