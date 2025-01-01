@@ -1,5 +1,5 @@
 function getVersion() {
-  return ("GoShop v1.0");
+  return ("obShop v1.0e");
 }
 
 /*
@@ -281,6 +281,10 @@ function getItemObjectById(id) {
 function getItemObjectIndexById(id) {
   return Item.getIndexById(id);
 }
+
+
+
+
 ////////////////////////////////
 
 
@@ -376,8 +380,9 @@ function showAlert(message, type) {
 
 
 // User clicked here
+/*
 function makeNewItem(type) {
-  //debugger;
+  debugger;
   thisItemObject = Item.create(type);
   if (!thisItemObject)
     return;
@@ -386,7 +391,7 @@ function makeNewItem(type) {
 
   return thisItemObject;
    
-}
+}*/
 
 /*
 function handleClick() {
@@ -407,6 +412,8 @@ function createItemButton(itemObject) {
 */
  
 function buttonSelected(id) {
+  alert("not used")
+  debugger;
   clearAllFocii();
   let el = gid(id);
   el.classList.add("hasFocus");
@@ -447,6 +454,7 @@ function downloadData() {
 }
 
 // This will be replaced when the use id code is working
+/*
 function loadTestData() {
 
   // now comes from disk
@@ -459,8 +467,7 @@ function loadTestData() {
 
   showAlert("loaded test data");
 }
-
-
+*/
 
 function DoNewItem() {
   it = Item.create("I");
@@ -476,7 +483,6 @@ function getFocusButtonId() {
 }
 
  
-
 function DoDeleteButton() {
   let itBe;
   if (itBe = getFocusId()) {
@@ -510,7 +516,7 @@ function DoUpdateButton() {
 
 
  
-
+/*  Helper functions */
 
 function gid(id) {
   return document.getElementById(id);
@@ -526,42 +532,26 @@ function getFocusId() {
 }
 
 function getIndexById(thisId) {
-
   for (let i = 0; i < itemArray.length; i++) {
     if (thisId == itemArray[i].id) {
       return i;
       break;
     }
   }
-
 }
 
 
-function itemUp() {
-
-  let id = getFocusId();
-  if (!id) {
-    alert("select an item, or select + in menu");
-    return;
-  }
-
-  idx = getIndexById(id);
-
-  if (!idx) return;
-  let thisItemIndex = itemArray[idx];
-
-  itemArray[idx] = itemArray[idx - 1];
-  itemArray[idx - 1] = thisItemIndex;
-
-  clearFocus();
-
-  displayList();
-
-  (gid("item_" + id)).classList.add('hasFocus');
-
-}
 
 
+/* 
+//////////////////////////
+//
+//
+//    BUTTON ACTIONS        
+//
+//
+//////////////////////////
+*/ 
 function DoUpdateButton() {
 
   let thisId = getFocusId();
@@ -579,6 +569,7 @@ function DoUpdateButton() {
 
 }
 
+/*
 function DoNewButton() {
 
   newItem = Object.create(item);
@@ -596,9 +587,10 @@ function DoNewButton() {
   alert("added a new item");
 
 }
-
+*/
 
 function DoDeleteButton() {
+
   let itBe;
   if (itBe = getFocusId()) {
     itemArray.splice(getIndexById(itBe), 1);
@@ -611,15 +603,6 @@ function DoDeleteButton() {
   }
 }
 
-function formToArray(index) {
-  itemArray[index].name = itemName.value;
-  itemArray[index].inStock = inStock.value;
-  itemArray[index].toBuy = toBuy.value;
-
-  displayList();
-}
-
-
 function DoNewButton() {
 
   newItem = Object.create(item);
@@ -637,6 +620,20 @@ function DoNewButton() {
   alert("added a new item");
 
 }
+
+function formToArray(index) {
+  itemArray[index].name = itemName.value;
+  itemArray[index].inStock = inStock.value;
+  itemArray[index].toBuy = toBuy.value;
+
+  displayList();
+}
+
+
+
+
+
+
 
 
 let saveStamp = 1;
@@ -727,6 +724,9 @@ function displayList() {
 
 
 
+////////////////////////////
+//  Disk functions
+////////////////////////////
 
 function saveToDisk() {
 
@@ -782,6 +782,7 @@ function loadFromDisk() {
   xhttp.send();
 }
 
+//////////////////////////////////////////
 
 function showAlert(message) {
   alertText.innerHTML = "<h3>" + message + "</h3>";
@@ -796,6 +797,33 @@ function formToArray(index) {
   displayList();
 }
 
+//
+//    Up and down
+//
+
+function itemUp() {
+
+  let id = getFocusId();
+  if (!id) {
+    alert("select an item, or select + in menu");
+    return;
+  }
+
+  idx = getIndexById(id);
+
+  if (!idx) return;
+  let thisItemIndex = itemArray[idx];
+
+  itemArray[idx] = itemArray[idx - 1];
+  itemArray[idx - 1] = thisItemIndex;
+
+  clearFocus();
+
+  displayList();
+
+  (gid("item_" + id)).classList.add('hasFocus');
+
+}
 
 function itemDown() {
 
