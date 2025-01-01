@@ -82,13 +82,18 @@ Context: Text size, font weight, and surrounding colors can influence what appea
 
 Implementing these algorithms in a real-world application would involve converting between color models
  (like RGB to HSL or to a perceived luminance model) and potentially adjusting based on empirical testing or user feedback to ensure practical readability.
--->
+
+
+
+
+
+ -->
 
 
 
 <head>
   <meta charset="UTF-8">
-  <title>GoShop</title>
+  <title>obShop</title>
 
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
@@ -113,10 +118,8 @@ Implementing these algorithms in a real-world application would involve converti
   </button>
 
   <div id="topDiv" class="topDiv fixed">
-    <button class="test" onclick="saveToDisk()">save to disk</button>
-    <button class="test" onclick="loadFromDisk()">load from disk</button>
-
-
+    <button onclick="saveToDisk()">save to disk</button>
+    <button onclick="loadFromDisk()">load from disk</button>
 
 
     <div class="goDiv">
@@ -139,17 +142,12 @@ Implementing these algorithms in a real-world application would involve converti
         <image src="images/up.png" style="width:30px; height:30px">
       </button>
 
-
-
-
-
-
       <div class="inputDiv">
         <table style="margin:auto;width:80%">
           <tr>
             <td>Name</td>
             <td>
-              <input id="itemName" oninput="DoUpdateButton()" type="text" size="10" maxlength="18">
+              <input id="itemName" oninput="DoUpdateButton()" type="text" size="10" maxlength="18" onfocus="select()">
             </td>
           </tr>
 
@@ -177,47 +175,36 @@ Implementing these algorithms in a real-world application would involve converti
 
         </table>
 
-
-
-
       </div>
     </div>
 
+    <script>
 
+
+
+    </script>
     <div class="dropdown" style="padding-bottom:19px">
       <button type="button" class="btn btn-primary dropdown-toggle btn-item" style="width:90%;padding-bottom: 10px;"
         data-bs-toggle="dropdown">
         Select list type
       </button>
-      <ul class="dropdown-menu" style="width:90%;background-color:transparent;  padding-top: 0px;  padding-bottom: 0px;  text-align: center;border: none">
-        <li><a class="dropdown-item" style="background-color:rgb(25, 135, 84);border-radius: 10px;" href="#">
-            <span style="color:white">Products</span></a></li>
-        <li><a class="dropdown-item" style="background-color:rgb(13, 110, 253);border-radius: 10px;" href="#">
-            <span style="color:white">Shops</span> </a></li>
-        <li><a class="dropdown-item" style="background-color:rgb(33, 37, 41);border-radius: 10px;" href="#" onclick="alert()"> <span
-              style="color:white">Catagories</span></a></li>
+      <ul class="dropdown-menu"
+        style="width:90%;background-color:transparent;  padding-top: 0px;  padding-bottom: 0px;  text-align: center;border: none">
+
+        <li><a id="product" class="dropdown-item" style="background-color:var(--ob-success);border-radius: 10px"
+            onclick="doSelectType()"><span style="color:white">Products</span></a></li>
+
+        <li><a id="shop" class="dropdown-item" style="background-color:var(--ob-primary);border-radius :10px"
+            onclick="doSelectType()"><span style="color:white">Shops</span></a></li>
+
+        <li><a id="section" class="dropdown-item" style="background-color:var(--ob-dark);border-radius: 10px"
+            onclick="doSelectType()"> <span style="color:white">Sections</span></a></li>
       </ul>
     </div>
 
     <div id="divItems"></div>
-
-
-
   </div>
-
-
 </body>
-
-<!--
-
-
-
-
-
-
-
--->
-
 
 
 <script>
@@ -227,7 +214,6 @@ Implementing these algorithms in a real-world application would involve converti
       alertText.innerHTML = "<h3>" + message + "</h3>";
       alertBox.classList.add("animate");
     },
-
   }
 
   function gid(id) {
@@ -245,8 +231,8 @@ Implementing these algorithms in a real-world application would involve converti
 
   function getIndexById(thisId) {
 
-    for (let i = 0; i < Global.itemArray.length; i++) {
-      if (thisId == Global.itemArray[i].id) {
+    for (let i = 0; i < itemArray.length; i++) {
+      if (thisId == itemArray[i].id) {
         return i;
         break;
       }
@@ -257,7 +243,7 @@ Implementing these algorithms in a real-world application would involve converti
   function DoDeleteButton() {
     let itBe;
     if (itBe = getFocusId()) {
-      Global.itemArray.splice(getIndexById(itBe), 1);
+      itemArray.splice(getIndexById(itBe), 1);
       clearFocus();
       displayList();
 
@@ -267,12 +253,10 @@ Implementing these algorithms in a real-world application would involve converti
     }
   }
 
-
-
   function formToArray(index) {
-    Global.itemArray[index].name = itemName.value;
-    Global.itemArray[index].inStock = inStock.value;
-    Global.itemArray[index].toBuy = toBuy.value;
+    itemArray[index].name = itemName.value;
+    itemArray[index].inStock = inStock.value;
+    itemArray[index].toBuy = toBuy.value;
 
     displayList();
   }
@@ -280,16 +264,14 @@ Implementing these algorithms in a real-world application would involve converti
   // form to item
   function DoUpdateButton() {
 
-
     let thisId = getFocusId();
     if (!thisId) {
       alert("select an item, or click + in menu");
       return;
     }
 
-
-    for (let i = 0; i < Global.itemArray.length; i++) {
-      if (thisId == Global.itemArray[i].id) {
+    for (let i = 0; i < itemArray.length; i++) {
+      if (thisId == itemArray[i].id) {
         formToArray(i);
         break;
       }
@@ -302,7 +284,7 @@ Implementing these algorithms in a real-world application would involve converti
     newItem = Object.create(item);
     newItem.id = getStamp();
     newItem.name = "new item";
-    Global.itemArray.unshift(newItem);
+    itemArray.unshift(newItem);
 
     buttonToForm(newItem);
 
@@ -326,10 +308,10 @@ Implementing these algorithms in a real-world application would involve converti
     idx = getIndexById(id);
 
     if (!idx) return;
-    let thisItemIndex = Global.itemArray[idx];
+    let thisItemIndex = itemArray[idx];
 
-    Global.itemArray[idx] = Global.itemArray[idx - 1];
-    Global.itemArray[idx - 1] = thisItemIndex;
+    itemArray[idx] = itemArray[idx - 1];
+    itemArray[idx - 1] = thisItemIndex;
 
     clearFocus();
 
@@ -349,11 +331,11 @@ Implementing these algorithms in a real-world application would involve converti
 
     let idx = getIndexById(id);
 
-    if (idx + 1 == Global.itemArray.length) return;
-    let thisItemIndex = Global.itemArray[idx];
+    if (idx + 1 == itemArray.length) return;
+    let thisItemIndex = itemArray[idx];
 
-    Global.itemArray[idx] = Global.itemArray[idx + 1];
-    Global.itemArray[idx + 1] = thisItemIndex;
+    itemArray[idx] = itemArray[idx + 1];
+    itemArray[idx + 1] = thisItemIndex;
 
 
     clearFocus();
@@ -363,11 +345,16 @@ Implementing these algorithms in a real-world application would involve converti
     (gid("item_" + id)).classList.add('hasFocus');
   }
 
-  const Global = {
-    itemArray: [],
+  let itemArray = [];
+
+  let Global = {
+    meta: {
+      listType: "product",
+      user: "anon"
+    },
     productArray: [],
-    depotArray: [],
-    superArray: []
+    sectionArray: [],
+    shopArray: []
   };
 
   function clearFocus() {
@@ -390,7 +377,7 @@ Implementing these algorithms in a real-world application would involve converti
 
       let a = id.split("_");
       let thisId = a[1];
-      Global.itemArray.forEach
+      itemArray.forEach
         (item => {
           if (item.id == thisId) {
 
@@ -423,13 +410,7 @@ Implementing these algorithms in a real-world application would involve converti
     }
 
   }
-  /*
-    function getStamp() {
-      let x = Math.random() * 10000000000;
-      x = x.toFixed(0);
-      return x;
-    }
-  */
+
 
   let saveStamp = 1;
   function getStamp() {
@@ -443,51 +424,6 @@ Implementing these algorithms in a real-world application would involve converti
     }
   }
 
-  /*
-  class item {
-    constructor(name) {
-      this._id = getStamp();
-      if (!name)
-        this._name = "unknown";
-      else this._name = name;
-      this._description = "unknown";
-      this._inStock = 0;
-      this._toBuy = 0;
-    }
-    get id() {
-      return this._id;
-    }
-    set name(newName) {
-      this._name = newName
-    }
-    get name() {
-      return this._name;
-    }
-    set name(newName) {
-      this._name = newName
-    }
-    get description() {
-      return this._description;
-    }
-    set description(newDescription) {
-      this._description = newDescription;
-    }
-    get inStock() {
-      return this._inStock;
-    }
-    set inStock(newInStock) {
-      this._inStock = newInStock;
-    }
-    get toBuy() {
-      return this._toBuy;
-    }
-    set toBuy(newToBuy) {
-      this._toBuy = newToBuy;;
-    }
-
-  }
-*/
-  // debugger;
 
 
   const l = location.toString();
@@ -519,34 +455,75 @@ Implementing these algorithms in a real-world application would involve converti
     test.description = "";
     test.inStock = "0";
     test.toBuy = "0";
-    Global.itemArray.push(test); // the working array
+    itemArray.push(test); // the working array
   }
 
 
 
+  // itemArray[0].name = "joe";
+
   //setInterval(loadFromDisk, 3000);
+  function doSelectType() {
+
+    listType = Global.meta.listType;
+
+    if (listType == "product") {
+      Global.productArray = itemArray.map(obj => ({ ...obj }));
+    }
+    if (listType == "shop") {
+      Global.shopArray = itemArray.map(obj => ({ ...obj }));;
+    }
+    if (listType == "section") {
+      Global.sectionArray = itemArray.map(obj => ({ ...obj }));
+    }
 
 
 
-  function displayList(a, theDiv, type) {
-    // debugger;
-    if (!a) a = Global.itemArray;
-    if (!theDiv) theDiv = divItems;
-    if (!type) type = "item";
+    listType = event.currentTarget.id;
+
+
+    if (listType == "product") {
+      itemArray = Global.productArray.map(obj => ({ ...obj }));
+    }
+
+    if (listType == "shop") {
+      itemArray = Global.shopArray.map(obj => ({ ...obj }));
+    }
+    if (listType == "section") {
+      itemArray = Global.sectionArray.map(obj => ({ ...obj }));
+    }
+
+    Global.meta.listType = listType;
+
+    displayList();
+  }
+
+  function displayList() {
+
+    theDiv = divItems;
+    let listType = Global.meta.listType;
+
+    
 
     let focus = getFocusId();
-    divItems.innerHTML = "";
-    a.forEach(item => {
 
+    divItems.innerHTML = "";
+    itemArray.forEach(item => {
 
       let newButton = document.createElement('button');
       theDiv.appendChild(newButton);
 
-      buttonId = type + "_" + item.id;
+      buttonId = "item_" + item.id;
       newButton.id = buttonId;
       newButton.classList.add("btn");
-      newButton.classList.add("btn-success");
-      newButton.classList.add("btn-" + type);
+      if (listType == "product")
+        newButton.classList.add("btn-success");
+      else if (listType == "shop")
+        newButton.classList.add("btn-primary");
+      else if (listType == "section")
+        newButton.classList.add("btn-dark");
+
+      newButton.classList.add("btn-item");
       newButton.innerHTML = item.name + `<span class="badge bg-primary inBadge" style="float:left">`
         + item.inStock + `</span><span class="badge bg-primary inBadge" style="float:right">` + item.toBuy + `</span>`
 
@@ -556,10 +533,13 @@ Implementing these algorithms in a real-world application would involve converti
     });
 
     if (focus) {
-      (gid("item_" + focus)).classList.add("hasFocus");
+      let el = gid("item_" + focus);
+      if (el)
+        (gid("item_" + focus)).classList.add("hasFocus");
     }
-  }
 
+  }
+  // starts here
 
   alertBox.addEventListener("animationend", () => { alertBox.classList.remove("animate"); });
 
@@ -568,13 +548,22 @@ Implementing these algorithms in a real-world application would involve converti
     return null;
   }
 
+
+  // Create deep copies of itemArray for each Global array
+  Global.productArray = itemArray.map(obj => ({ ...obj }));
+  Global.shopArray = itemArray.map(obj => ({ ...obj }));
+  Global.sectionArray = itemArray.map(obj => ({ ...obj }));
+
+
+
+
   loadFromDisk();
-  Global.productArray = Global.itemArray;
+
   displayList();
 
 
 
-  const gItemArray = [];
+  // const gItemArray = [];
 
   function showAlert(message) {
     alertText.innerHTML = "<h3>" + message + "</h3>";
@@ -584,7 +573,11 @@ Implementing these algorithms in a real-world application would involve converti
 
   function saveToDisk() {
 
-    const theData = JSON.stringify(Global.itemArray);
+    listType = Global.meta.listType;
+    let s = "Global." + listType + "Array = itemArray";
+    eval(s);
+
+    const theData = JSON.stringify(Global);
 
     const xhttp = new XMLHttpRequest();
     var req = "savetodisk.php";
@@ -606,6 +599,7 @@ Implementing these algorithms in a real-world application would involve converti
 
   function loadFromDisk() {
 
+
     const xhttp = new XMLHttpRequest();
     let req = "loadfromdisk.php";
     // let user = "TESTUSER";
@@ -616,7 +610,14 @@ Implementing these algorithms in a real-world application would involve converti
     xhttp.onload = function () {
 
       let json = this.responseText;
-      Global.itemArray = JSON.parse(json);
+      Global = JSON.parse(json);
+
+
+
+      listType = Global.meta.listType;
+      s = "itemArray = Global." + listType + "Array";
+      eval(s);
+
 
       displayList();
       showAlert("done load from disk ");
