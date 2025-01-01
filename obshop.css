@@ -76,6 +76,7 @@ body {
   border-radius: 10px;
   margin-left: 20px;
   margin-right: 20px;
+  margin-bottom: 0px;
 }
 
 .btn-item {
@@ -98,6 +99,7 @@ body {
   background-color: aquamarine;
   height: 350px;
   overflow-y: auto;
+  margin-left:5px;
   padding: 30px;
   padding-top: 2px;
 
