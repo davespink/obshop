@@ -53,6 +53,41 @@ const Alert = {
 
 */
 
+
+
+// User clicked here
+/*
+function makeNewItem(type) {
+  debugger;
+  thisItemObject = Item.create(type);
+  if (!thisItemObject)
+    return;
+
+  gItemArray.push(thisItemObject);
+
+  return thisItemObject;
+   
+}*/
+
+/*
+function handleClick() {
+  alert();
+  let thisButton = event.currentTarget;
+  buttonSelected(thisButton.id);
+}
+
+function createChainButton(itemObject) {
+  return Button.createChain(itemObject);
+}
+
+
+function createItemButton(itemObject) {
+  return Button.createItem(itemObject);
+}
+
+*/
+
+
 /*
 
 const User = {
@@ -269,23 +304,6 @@ const Button = {
 
 */
 
-/////////////////////////
-//
-// array operations
-//
-////////////////////////
-function getItemObjectById(id) {
-  return Item.getById(id);
-}
-
-function getItemObjectIndexById(id) {
-  return Item.getIndexById(id);
-}
-
-
-
-
-////////////////////////////////
 
 
 /*
@@ -309,6 +327,12 @@ function doSearch() {
 }
 
 */
+
+
+
+////////////////////////////////
+
+
 /*
 function clearAllFocii() {
   UI.clearAllFocii();
@@ -365,6 +389,49 @@ function compareAlpha(aItem, bItem) {
 }
 */
 
+// This will be replaced when the use id code is working
+/*
+function loadTestData() {
+
+  // now comes from disk
+
+  Disk.loadData("testdata.txt");
+
+  UI.showAllItems();
+
+  chain_0.click();
+
+  showAlert("loaded test data");
+}
+*/
+/*
+function DoNewItem() {
+  it = Item.create("I");
+  Button.createItem(it);
+  UI.showAllItems();
+}*/
+
+
+/*
+function DoNewButton() {
+
+  newItem = Object.create(item);
+  newItem.id = getStamp();
+  newItem.name = "new item";
+  itemArray.unshift(newItem);
+
+  buttonToForm(newItem);
+
+  displayList();
+
+  clearFocus();
+  (gid("item_" + newItem.id)).classList.add('hasFocus');
+
+  alert("added a new item");
+
+}
+*/
+
 
 function doDebug(message) {
   // if (message.length == 0) gid("debugWindow").innerHTML = ""; else
@@ -372,45 +439,48 @@ function doDebug(message) {
 
 }
 
-function showAlert(message, type) {
-  Alert.show(message);
+
+/*  Helper functions */
+
+function gid(id) {
+  return document.getElementById(id);
 }
+function getFocusId() {
+  let arr = document.getElementsByClassName("hasFocus");
+  if (!arr.length) return null;
+  let selected = arr[0];
+  let id = selected.id;
+
+  let a = id.split("_");
+  return a[1];
+}
+
+function getItemObjectById(id) {
+  return Item.getById(id);
+}
+
+function getItemObjectIndexById(id) {
+  return Item.getIndexById(id);
+}
+
+function getIndexById(thisId) {
+  for (let i = 0; i < itemArray.length; i++) {
+    if (thisId == itemArray[i].id) {
+      return i;
+      break;
+    }
+  }
+}
+
+//function showAlert(message, type) {
+//  Alert.show(message);
+//}
+
 
  
 
 
-// User clicked here
 /*
-function makeNewItem(type) {
-  debugger;
-  thisItemObject = Item.create(type);
-  if (!thisItemObject)
-    return;
-
-  gItemArray.push(thisItemObject);
-
-  return thisItemObject;
-   
-}*/
-
-/*
-function handleClick() {
-  alert();
-  let thisButton = event.currentTarget;
-  buttonSelected(thisButton.id);
-}
-
-function createChainButton(itemObject) {
-  return Button.createChain(itemObject);
-}
-
-
-function createItemButton(itemObject) {
-  return Button.createItem(itemObject);
-}
-
-*/
- 
 function buttonSelected(id) {
   alert("not used")
   debugger;
@@ -426,7 +496,7 @@ function buttonSelected(id) {
   itemName.value = thisItem.name;
   toBuy.value = thisItem.toBuy;
 }
-
+*/
 
 function createUser() {
 
@@ -443,37 +513,17 @@ function createUser() {
     }
     else
       loadTestData();
-    //  saveDataToDisk();
+
   }
   xhttp.send("user=" + newUser);
 }
 
 // Disk operations to load or save data
 function downloadData() {
+  alert("not yet");
   Disk.downloadData();
 }
 
-// This will be replaced when the use id code is working
-/*
-function loadTestData() {
-
-  // now comes from disk
-
-  Disk.loadData("testdata.txt");
-
-  UI.showAllItems();
-
-  chain_0.click();
-
-  showAlert("loaded test data");
-}
-*/
-
-function DoNewItem() {
-  it = Item.create("I");
-  Button.createItem(it);
-  UI.showAllItems();
-}
 
 function getFocusButtonId() {
   let bs = document.getElementsByClassName("hasFocus");
@@ -482,20 +532,10 @@ function getFocusButtonId() {
   return el.id;
 }
 
- 
-function DoDeleteButton() {
-  let itBe;
-  if (itBe = getFocusId()) {
-    itemArray.splice(getIndexById(itBe), 1);
-    clearFocus();
-    displayList();
 
-    itemName.value = "";
-    toBuy.value = 0;
-    inStock.value = 0;
-  }
-}
 
+
+/*
 function DoUpdateButton() {
   let bs = document.getElementsByClassName("hasFocus");
   let el = bs[0];
@@ -513,45 +553,8 @@ function DoUpdateButton() {
   gid(el.id).classList.add("hasFocus");
 }
 
+*/
 
-
- 
-/*  Helper functions */
-
-function gid(id) {
-  return document.getElementById(id);
-}
-function getFocusId() {
-  let arr = document.getElementsByClassName("hasFocus");
-  if (!arr.length) return null;
-  let selected = arr[0];
-  let id = selected.id;
-
-  let a = id.split("_");
-  return a[1];
-}
-
-function getIndexById(thisId) {
-  for (let i = 0; i < itemArray.length; i++) {
-    if (thisId == itemArray[i].id) {
-      return i;
-      break;
-    }
-  }
-}
-
-
-
-
-/* 
-//////////////////////////
-//
-//
-//    BUTTON ACTIONS        
-//
-//
-//////////////////////////
-*/ 
 function DoUpdateButton() {
 
   let thisId = getFocusId();
@@ -569,25 +572,7 @@ function DoUpdateButton() {
 
 }
 
-/*
-function DoNewButton() {
 
-  newItem = Object.create(item);
-  newItem.id = getStamp();
-  newItem.name = "new item";
-  itemArray.unshift(newItem);
-
-  buttonToForm(newItem);
-
-  displayList();
-
-  clearFocus();
-  (gid("item_" + newItem.id)).classList.add('hasFocus');
-
-  alert("added a new item");
-
-}
-*/
 
 function DoDeleteButton() {
 
@@ -600,6 +585,10 @@ function DoDeleteButton() {
     itemName.value = "";
     toBuy.value = 0;
     inStock.value = 0;
+  } else {
+
+    alert("select an item");
+    return;
   }
 }
 
@@ -620,34 +609,6 @@ function DoNewButton() {
   alert("added a new item");
 
 }
-
-function formToArray(index) {
-  itemArray[index].name = itemName.value;
-  itemArray[index].inStock = inStock.value;
-  itemArray[index].toBuy = toBuy.value;
-
-  displayList();
-}
-
-
-
-
-
-
-
-
-let saveStamp = 1;
-function getStamp() {
-  while (true) {
-    let stamp = (new Date().getTime()).toString();
-
-    if (stamp != saveStamp) {
-      saveStamp = stamp;
-      return stamp;
-    }
-  }
-}
-
 
 function doSelectType() {
 
@@ -681,6 +642,30 @@ function doSelectType() {
 
   displayList();
 }
+
+
+function formToArray(index) {
+  itemArray[index].name = itemName.value;
+  itemArray[index].inStock = inStock.value;
+  itemArray[index].toBuy = toBuy.value;
+
+  displayList();
+}
+
+
+let saveStamp = 1;
+function getStamp() {
+  while (true) {
+    let stamp = (new Date().getTime()).toString();
+
+    if (stamp != saveStamp) {
+      saveStamp = stamp;
+      return stamp;
+    }
+  }
+}
+
+
 
 function displayList() {
 

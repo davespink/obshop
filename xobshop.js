@@ -1,7 +1,8 @@
 function getVersion() {
-  return ("GoShop v1.0");
+  return ("obShop v1.0e");
 }
 
+/*
 function gid(id) {
   return document.getElementById(id);
 }
@@ -31,6 +32,9 @@ function isDebug() {
   return false;
 }
 
+
+
+
 const Utils = {
   doDebug(s) {
     if (isDebug())
@@ -46,6 +50,45 @@ const Alert = {
   },
 
 }
+
+*/
+
+
+
+// User clicked here
+/*
+function makeNewItem(type) {
+  debugger;
+  thisItemObject = Item.create(type);
+  if (!thisItemObject)
+    return;
+
+  gItemArray.push(thisItemObject);
+
+  return thisItemObject;
+   
+}*/
+
+/*
+function handleClick() {
+  alert();
+  let thisButton = event.currentTarget;
+  buttonSelected(thisButton.id);
+}
+
+function createChainButton(itemObject) {
+  return Button.createChain(itemObject);
+}
+
+
+function createItemButton(itemObject) {
+  return Button.createItem(itemObject);
+}
+
+*/
+
+
+/*
 
 const User = {
   name: "anon",
@@ -87,6 +130,11 @@ const User = {
 //
 //    Item - the data stored on each item or container
 //
+
+
+*/
+
+/*
 const Item = {
   // belongs in UI
   create(type) {
@@ -139,7 +187,8 @@ const Item = {
     }
   },
 }
-
+*/
+/*
 const UI = {
   showAllItems() {
 
@@ -179,7 +228,9 @@ const UI = {
 
   },
 }
+*/
 
+/*
 const Button = {
   click(id) {
     let b = gid(id);
@@ -244,66 +295,18 @@ const Button = {
     return buttonId;
 
   },
+ 
 
-  itemUp() {
-
-    let buttonId = getFocusButtonId();
-    let id = Button.idToItem(buttonId);
-
-    let idx = Item.getIndexById(id);
-    if (!idx) return;
-    let thisItemIndex = gItemArray[idx];
-
-    gItemArray[idx] = gItemArray[idx - 1];
-    gItemArray[idx - 1] = thisItemIndex;
-
-    UI.showAllItems();
-    clearAllFocii();
-    gid(buttonId).classList.add('hasFocus');
-
-  },
-
-  itemDown() {
-
-    let buttonId = getFocusButtonId();
-    let id = Button.idToItem(buttonId);
-
-    let idx = Item.getIndexById(id);
-
-    if (idx + 1 == gItemArray.length) return;
-
-    let thisItemIndex = gItemArray[idx];
-
-    gItemArray[idx] = gItemArray[idx + 1];
-    gItemArray[idx + 1] = thisItemIndex;
-
-    UI.showAllItems();
-    clearAllFocii();
-    gid(buttonId).classList.add('hasFocus');
-
-  },
+  
 
 }
 
 
-
-
-/////////////////////////
-//
-// array operations
-//
-////////////////////////
-function getItemObjectById(id) {
-  return Item.getById(id);
-}
-
-function getItemObjectIndexById(id) {
-  return Item.getIndexById(id);
-}
-////////////////////////////////
+*/
 
 
 
+/*
 function doSearch() {
   // debugger;
 
@@ -323,8 +326,14 @@ function doSearch() {
   }
 }
 
+*/
 
 
+
+////////////////////////////////
+
+
+/*
 function clearAllFocii() {
   UI.clearAllFocii();
   return;
@@ -335,8 +344,10 @@ function clearAllFocii() {
 
 }
 
+*/
 
 
+/*
 function clickButton(id) {
   buttonId = "item_" + id;
   b = gid(buttonId);
@@ -344,9 +355,9 @@ function clickButton(id) {
   b.click();
 }
 
+*/
 
-
-
+/*
 function compareItems(aItem, bItem) {
 
   aName = aItem.name.toUpperCase();
@@ -376,6 +387,51 @@ function compareAlpha(aItem, bItem) {
   }
   return 0;
 }
+*/
+
+// This will be replaced when the use id code is working
+/*
+function loadTestData() {
+
+  // now comes from disk
+
+  Disk.loadData("testdata.txt");
+
+  UI.showAllItems();
+
+  chain_0.click();
+
+  showAlert("loaded test data");
+}
+*/
+/*
+function DoNewItem() {
+  it = Item.create("I");
+  Button.createItem(it);
+  UI.showAllItems();
+}*/
+
+
+/*
+function DoNewButton() {
+
+  newItem = Object.create(item);
+  newItem.id = getStamp();
+  newItem.name = "new item";
+  itemArray.unshift(newItem);
+
+  buttonToForm(newItem);
+
+  displayList();
+
+  clearFocus();
+  (gid("item_" + newItem.id)).classList.add('hasFocus');
+
+  alert("added a new item");
+
+}
+*/
+
 
 function doDebug(message) {
   // if (message.length == 0) gid("debugWindow").innerHTML = ""; else
@@ -383,242 +439,51 @@ function doDebug(message) {
 
 }
 
-function showAlert(message, type) {
-  Alert.show(message);
+
+/*  Helper functions */
+
+function gid(id) {
+  return document.getElementById(id);
+}
+function getFocusId() {
+  let arr = document.getElementsByClassName("hasFocus");
+  if (!arr.length) return null;
+  let selected = arr[0];
+  let id = selected.id;
+
+  let a = id.split("_");
+  return a[1];
 }
 
-function clearStorage() {
-  localStorage.clear();
-
-  showAlert("done clear");
-  refreshJSON();
+function getItemObjectById(id) {
+  return Item.getById(id);
 }
 
-
-const noImage = "./images/noimage.jpg";
-
-
-
-// User clicked here
-function makeNewItem(type) {
-  //debugger;
-  thisItemObject = Item.create(type);
-  if (!thisItemObject)
-    return;
-
-  gItemArray.push(thisItemObject);
-
-  return thisItemObject;
-  // find last breadcrumb
-
-  //paintBreadCrumbs(thisItemObject.parentId);
-
-  // Button.click("item_" + thisItemObject.id);
+function getItemObjectIndexById(id) {
+  return Item.getIndexById(id);
 }
 
-
-function handleClick() {
-  alert();
-  let thisButton = event.currentTarget;
-  buttonSelected(thisButton.id);
-}
-
-function createChainButton(itemObject) {
-  return Button.createChain(itemObject);
-}
-
-
-function createItemButton(itemObject) {
-  return Button.createItem(itemObject);
-}
-
-
-
-
-
-//////  Back End //////////////
-const Disk = {
-  saveCurrentData() {
-    //   debugger;
-    const theData = JSON.stringify(gItemArray);
-
-    const xhttp = new XMLHttpRequest();
-    var req = "savetodisk.php";
-    let user = User.get();
-    // if (user)
-    //  req += "?user=" + user;
-    ///alert(user + ' save');
-    xhttp.open("POST", req);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.onload = function () {
-      showAlert(this.responseText);
+function getIndexById(thisId) {
+  for (let i = 0; i < itemArray.length; i++) {
+    if (thisId == itemArray[i].id) {
+      return i;
+      break;
     }
-    xhttp.send("data=" + theData);
-  },
-
-  loadCurrentData() {
-
-    //debugger;
-    const xhttp = new XMLHttpRequest();
-    let req = "loadfromdisk.php";
-    let user = User.get();
-    //   alert(user);
-    // if (user)
-    //  req += "?user=" + user;
-    xhttp.open("POST", req);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.onload = function () {
-
-      gItemArray = JSON.parse(this.responseText);
-
-      UI.showAllItems();
-
-    }
-    xhttp.send();
-  },
-
-
-  loadData(file) {
-
-    const xhttp = new XMLHttpRequest();
-    let req = "loaddatafromdisk.php";
-
-    //  let file = "testdata.txt";
-    //   alert(user);
-
-    req += "?filename=" + file;
-    xhttp.open("POST", req);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.onload = function () {
-      //showAlert(this.responseText);
-      gItemArray = JSON.parse(this.responseText);
-
-      UI.showAllItems();
-      paintBreadCrumbs(0);
-      showAlert("done load test data from disk ", "extra");
-
-      chain_0.click();
-    }
-    xhttp.send();
-
-  },
-
-  uploadImage() {
-    var files = file.files;
-
-    if (files.length > 0) {
-
-      let idValue = getFormValue('inItemId');
-
-      let el = gid("image_" + idValue);
-
-
-      thePhoto.src = "";
-
-      let theItemObject = getItemObjectById(idValue);
-
-      var formData = new FormData();
-      //let theDir = userDir();
-
-      formData.append("file", files[0]); // this passes the filename to PHP
-
-      // make up name of file
-
-      var xhttp = new XMLHttpRequest();
-
-      // produces a file with name same as object id + filetype
-      //let req = "./uploadincitio.php?stamp=" + idValue;
-
-
-      //  $('input[type="file"]').val(null);
-
-
-      let dir = User.dir();
-
-      if (dir.length > 0)
-        dir = "users/" + dir + "/";
-      else dir = "";
-
-      stamp = idValue;
-
-      // produces a file with name same as object id + filetype
-      let req = "./uploadincitio.php?dir=" + dir + "&stamp=" + idValue;
-
-      xhttp.open("POST", req, true);
-
-      xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-
-          var response = this.responseText;
-          if (response == 1) {
-            alert("File not uploaded. ");
-          } else {
-            thePhoto.src = response;
-            theItemObject.image = response;
-
-            UI.showAllItems();
-            var delayInMilliseconds = 100; // 0.1 seconds
-
-            setTimeout(function () {
-              //xxx.click();
-              thePhoto.src = forceImageLoad(thePhoto.src);
-              theHoverPhoto.src = thePhoto.src;
-
-              // https://stackoverflow.com/questions/9155136/chrome-file-upload-bug-on-change-event-wont-be-executed-twice-with-the-same-fi
-
-              file.value = null;
-
-            }, delayInMilliseconds); // to force a refresh .. hopefully
-          }
-        }
-      };
-      // Send request with data
-      xhttp.send(formData);
-    } else {
-      showAlert("Please select a file");
-    }
-
-
-  },
-
-
-  downloadData() {
-
-    let js = JSON.stringify(gItemArray);
-
-    var data = new Blob([js]);
-    var a = document.getElementById('a'); // <-- this is defined near the download button
-    a.href = URL.createObjectURL(data);
-
-    a.click();
-
-    showAlert("Downloaded " + a.download);
-
-
-
-  },
-
-
+  }
 }
 
-
-function saveDataToDisk() {
-
-  alert("no save");
-  // Disk.saveData();
-}
-
-//function loadUserDataFromDisk() {
-//  Disk.loadUserData();
+//function showAlert(message, type) {
+//  Alert.show(message);
 //}
 
-// FILE UPLOAD STUFF
-function uploadImageFile() {
 
-  Disk.uploadImage();
-}
+ 
 
+
+/*
 function buttonSelected(id) {
+  alert("not used")
+  debugger;
   clearAllFocii();
   let el = gid(id);
   el.classList.add("hasFocus");
@@ -631,7 +496,7 @@ function buttonSelected(id) {
   itemName.value = thisItem.name;
   toBuy.value = thisItem.toBuy;
 }
-
+*/
 
 function createUser() {
 
@@ -648,37 +513,17 @@ function createUser() {
     }
     else
       loadTestData();
-    //  saveDataToDisk();
+
   }
   xhttp.send("user=" + newUser);
 }
 
 // Disk operations to load or save data
 function downloadData() {
+  alert("not yet");
   Disk.downloadData();
 }
 
-// This will be replaced when the use id code is working
-function loadTestData() {
-
-  // now comes from disk
-
-  Disk.loadData("testdata.txt");
-
-  UI.showAllItems();
-
-  chain_0.click();
-
-  showAlert("loaded test data");
-}
-
-
-
-function DoNewItem() {
-  it = Item.create("I");
-  Button.createItem(it);
-  UI.showAllItems();
-}
 
 function getFocusButtonId() {
   let bs = document.getElementsByClassName("hasFocus");
@@ -687,16 +532,10 @@ function getFocusButtonId() {
   return el.id;
 }
 
-function DoDeleteButton() {
-  let itBe;
-  if (itBe = getFocusButtonId()) {
-    gItemArray.splice(Item.getIndexById(itBe), 1);
-    UI.showAllItems();
-  }
-}
 
 
 
+/*
 function DoUpdateButton() {
   let bs = document.getElementsByClassName("hasFocus");
   let el = bs[0];
@@ -714,4 +553,341 @@ function DoUpdateButton() {
   gid(el.id).classList.add("hasFocus");
 }
 
+*/
 
+function DoUpdateButton() {
+
+  let thisId = getFocusId();
+  if (!thisId) {
+    alert("select an item, or click + in menu");
+    return;
+  }
+
+  for (let i = 0; i < itemArray.length; i++) {
+    if (thisId == itemArray[i].id) {
+      formToArray(i);
+      break;
+    }
+  }
+
+}
+
+
+
+function DoDeleteButton() {
+
+  let itBe;
+  if (itBe = getFocusId()) {
+    itemArray.splice(getIndexById(itBe), 1);
+    clearFocus();
+    displayList();
+
+    itemName.value = "";
+    toBuy.value = 0;
+    inStock.value = 0;
+  } else {
+
+    alert("select an item");
+    return;
+  }
+}
+
+function DoNewButton() {
+
+  newItem = Object.create(item);
+  newItem.id = getStamp();
+  newItem.name = "new item";
+  itemArray.unshift(newItem);
+
+  buttonToForm(newItem);
+
+  displayList();
+
+  clearFocus();
+  (gid("item_" + newItem.id)).classList.add('hasFocus');
+
+  alert("added a new item");
+
+}
+
+function doSelectType() {
+
+  listType = Global.meta.listType;
+
+  if (listType == "product") {
+    Global.productArray = itemArray.map(obj => ({ ...obj }));
+  }
+  if (listType == "shop") {
+    Global.shopArray = itemArray.map(obj => ({ ...obj }));;
+  }
+  if (listType == "section") {
+    Global.sectionArray = itemArray.map(obj => ({ ...obj }));
+  }
+
+  listType = event.currentTarget.id;
+
+
+  if (listType == "product") {
+    itemArray = Global.productArray.map(obj => ({ ...obj }));
+  }
+
+  if (listType == "shop") {
+    itemArray = Global.shopArray.map(obj => ({ ...obj }));
+  }
+  if (listType == "section") {
+    itemArray = Global.sectionArray.map(obj => ({ ...obj }));
+  }
+
+  Global.meta.listType = listType;
+
+  displayList();
+}
+
+
+function formToArray(index) {
+  itemArray[index].name = itemName.value;
+  itemArray[index].inStock = inStock.value;
+  itemArray[index].toBuy = toBuy.value;
+
+  displayList();
+}
+
+
+let saveStamp = 1;
+function getStamp() {
+  while (true) {
+    let stamp = (new Date().getTime()).toString();
+
+    if (stamp != saveStamp) {
+      saveStamp = stamp;
+      return stamp;
+    }
+  }
+}
+
+
+
+function displayList() {
+
+  theDiv = divItems;
+  let listType = Global.meta.listType;
+
+  let focus = getFocusId();
+
+  divItems.innerHTML = "";
+  itemArray.forEach(item => {
+
+    let newButton = document.createElement('button');
+    theDiv.appendChild(newButton);
+
+    buttonId = "item_" + item.id;
+    newButton.id = buttonId;
+    newButton.classList.add("btn");
+    if (listType == "product")
+      newButton.classList.add("btn-success");
+    else if (listType == "shop")
+      newButton.classList.add("btn-primary");
+    else if (listType == "section")
+      newButton.classList.add("btn-dark");
+
+    newButton.classList.add("btn-item");
+    newButton.innerHTML = item.name + `<span class="badge bg-primary inBadge" style="float:left">`
+      + item.inStock + `</span><span class="badge bg-primary inBadge" style="float:right">` + item.toBuy + `</span>`
+
+    const element = gid(buttonId);
+    newButton.addEventListener("click", selectButton);
+
+  });
+
+  if (focus) {
+    let el = gid("item_" + focus);
+    if (el)
+      (gid("item_" + focus)).classList.add("hasFocus");
+  }
+
+}
+
+
+
+////////////////////////////
+//  Disk functions
+////////////////////////////
+
+function saveToDisk() {
+
+  listType = Global.meta.listType;
+  let s = "Global." + listType + "Array = itemArray";
+  eval(s);
+
+  const theData = JSON.stringify(Global);
+
+  const xhttp = new XMLHttpRequest();
+  var req = "savetodisk.php";
+  // let user = User.get();
+
+
+  //  user = "TESTUSER";
+  req += "?filename=" + "autosave_" + user + ".txt";
+  ///alert(user + ' save');
+  xhttp.open("POST", req);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.onload = function () {
+
+  }
+  xhttp.send("data=" + theData);
+
+}
+
+
+function loadFromDisk() {
+
+  const xhttp = new XMLHttpRequest();
+  let req = "loadfromdisk.php";
+  // let user = "TESTUSER";
+
+  req += "?filename=" + "autosave_" + user + ".txt";
+  xhttp.open("POST", req);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.onload = function () {
+
+    let json = this.responseText;
+    Global = JSON.parse(json);
+
+
+
+    listType = Global.meta.listType;
+    s = "itemArray = Global." + listType + "Array";
+    eval(s);
+
+
+    displayList();
+    showAlert("done load from disk ");
+
+  }
+  xhttp.send();
+}
+
+//////////////////////////////////////////
+
+function showAlert(message) {
+  alertText.innerHTML = "<h3>" + message + "</h3>";
+  alertBox.classList.add("animate");
+}
+
+function formToArray(index) {
+  itemArray[index].name = itemName.value;
+  itemArray[index].inStock = inStock.value;
+  itemArray[index].toBuy = toBuy.value;
+
+  displayList();
+}
+
+//
+//    Up and down
+//
+
+function itemUp() {
+
+  let id = getFocusId();
+  if (!id) {
+    alert("select an item, or select + in menu");
+    return;
+  }
+
+  idx = getIndexById(id);
+
+  if (!idx) return;
+  let thisItemIndex = itemArray[idx];
+
+  itemArray[idx] = itemArray[idx - 1];
+  itemArray[idx - 1] = thisItemIndex;
+
+  clearFocus();
+
+  displayList();
+
+  (gid("item_" + id)).classList.add('hasFocus');
+
+}
+
+function itemDown() {
+
+  let id = getFocusId();
+  if (!id) {
+    alert("select an item, or select + to add a new item");
+    return;
+  }
+
+  let idx = getIndexById(id);
+
+  if (idx + 1 == itemArray.length) return;
+  let thisItemIndex = itemArray[idx];
+
+  itemArray[idx] = itemArray[idx + 1];
+  itemArray[idx + 1] = thisItemIndex;
+
+
+  clearFocus();
+
+  displayList();
+
+  (gid("item_" + id)).classList.add('hasFocus');
+}
+
+
+function clearFocus() {
+  let arr = document.getElementsByClassName("btn-item");
+  for (let i = 0; i < arr.length; i++) {
+    arr[i].classList.remove("hasFocus");
+  }
+}
+
+function buttonToForm(item) {
+  itemName.value = item.name;
+  inStock.value = item.inStock;
+  toBuy.value = item.toBuy;
+
+}
+
+
+
+function selectButton(e) {
+
+  function getItemById(id) {
+
+    let a = id.split("_");
+    let thisId = a[1];
+    itemArray.forEach
+      (item => {
+        if (item.id == thisId) {
+
+          buttonToForm(item);
+
+        }
+      });
+  }
+
+
+  clearFocus();
+  e.currentTarget.classList.add("hasFocus");
+
+  let thisId = e.currentTarget.id;
+  let thisItem = getItemById(thisId);
+
+}
+
+
+class obObject {
+  constructor(type) {  // Class constructor
+    this._type = type;  // Class body/properties
+  }
+  get(type) { return this._type }
+}
+
+class obButton extends obObject {
+  constructor() {
+    super('obButton');
+    this.model = mod;
+  }
+
+}
