@@ -95,6 +95,15 @@ body {
   background-color: pink;
 }
 
+.btn-buyFrom{
+  font-family: inherit;
+  width:120px;
+  border-radius:5px;
+  transform:scale(.8);
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
 #divItems {
   background-color: aquamarine;
   height: 350px;

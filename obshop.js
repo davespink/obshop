@@ -8,6 +8,30 @@ function getVersion() {
 function gid(id) {
   return document.getElementById(id);
 }
+function hid(el) {
+  el.style.display = 'none';
+}
+function vid(el) {
+  el.style.display = 'initial';
+}
+function tvid(el) {
+  if (el.style.display == 'initial')
+    hid(el)
+  else vid(el);
+}
+function viz(el) {
+  if (el.style.display == 'initial')
+    return true; else return false;
+}
+function isa(el, c) {
+  if (el == undefined || el == null || el == document)
+    return false;
+  if (el.classList.contains(c))
+    return true; else return false;
+}
+
+
+
 function getFocusId() {
   let arr = document.getElementsByClassName("hasFocus");
   if (!arr.length) return null;
@@ -35,10 +59,10 @@ function getIndexById(thisId) {
   }
 }
 
- 
- 
 
- 
+
+
+
 
 function createUser() {
 
@@ -107,7 +131,7 @@ function DoUpdateButton() {
 
   for (let i = 0; i < itemArray.length; i++) {
     if (thisId == itemArray[i].id) {
-      formToArray(i);
+      formToItem(i);
       break;
     }
   }
@@ -158,38 +182,51 @@ function doSelectType() {
 
   if (listType == "product") {
     Global.productArray = itemArray.map(obj => ({ ...obj }));
+
   }
   if (listType == "shop") {
     Global.shopArray = itemArray.map(obj => ({ ...obj }));;
+
   }
   if (listType == "section") {
     Global.sectionArray = itemArray.map(obj => ({ ...obj }));
+
   }
 
   listType = event.currentTarget.id;
 
-
   if (listType == "product") {
     itemArray = Global.productArray.map(obj => ({ ...obj }));
+    inStockRow.style.display = 'table-row';
+    toBuyRow.style.display = 'table-row';
+    hid(colorRow);  
   }
-
   if (listType == "shop") {
     itemArray = Global.shopArray.map(obj => ({ ...obj }));
+    hid(inStockRow); hid(toBuyRow);
+    colorRow.style.display = 'table-row';
   }
   if (listType == "section") {
     itemArray = Global.sectionArray.map(obj => ({ ...obj }));
+    hid(inStockRow); hid(toBuyRow);
+    colorRow.style.display = 'table-row';
   }
 
   Global.meta.listType = listType;
-  showType.innerHTML = "<h1>" +  listType + "</h1>";
+
+
+  showType.innerHTML = "<h1>" + listType + "</h1>";
   displayList();
 }
 
 
-function formToArray(index) {
+function formToItem(index) {
+
   itemArray[index].name = itemName.value;
   itemArray[index].inStock = inStock.value;
   itemArray[index].toBuy = toBuy.value;
+  itemArray[index].backgroundColor = backgroundColor.value;
+  itemArray[index].textColor = textColor.value;
 
   displayList();
 }
@@ -233,6 +270,10 @@ function displayList() {
       newButton.classList.add("btn-dark");
 
     newButton.classList.add("btn-item");
+    if (item.textColor)
+      newButton.style.color = item.textColor;
+    if (item.backgroundColor)
+      newButton.style.backgroundColor = item.backgroundColor
     newButton.innerHTML = item.name + `<span class="badge bg-primary inBadge" style="float:left">`
       + item.inStock + `</span><span class="badge bg-primary inBadge" style="float:right">` + item.toBuy + `</span>`
 
@@ -316,11 +357,12 @@ function showAlert(message) {
   alertBox.classList.add("animate");
 }
 
-function formToArray(index) {
+function formToItem(index) {
   itemArray[index].name = itemName.value;
   itemArray[index].inStock = inStock.value;
   itemArray[index].toBuy = toBuy.value;
-
+  itemArray[index].textColor = textColor.value;
+  itemArray[index].backgroundColor = backgroundColor.value;
   displayList();
 }
 
@@ -384,37 +426,40 @@ function clearFocus() {
   }
 }
 
-function buttonToForm(item) {
+function itemToForm(item) {
   itemName.value = item.name;
   inStock.value = item.inStock;
   toBuy.value = item.toBuy;
+  if (item.backgroundColor)
+    backgroundColor.value = item.backgroundColor;
+  if (item.textColor)
+    textColor.value = item.textColor;
+}
+
+function getItemById(id) {
+
+  let a = id.split("_");
+  let thisId = a[1];
+
+
+  for (let i = 0; i < itemArray.length; i++) {
+    if (itemArray[i].id == thisId)
+      return itemArray[i];
+  }
+
+
 
 }
 
 
-
 function selectButton(e) {
-
-  function getItemById(id) {
-
-    let a = id.split("_");
-    let thisId = a[1];
-    itemArray.forEach
-      (item => {
-        if (item.id == thisId) {
-
-          buttonToForm(item);
-
-        }
-      });
-  }
-
 
   clearFocus();
   e.currentTarget.classList.add("hasFocus");
 
-  let thisId = e.currentTarget.id;
-  let thisItem = getItemById(thisId);
+  thisItem = getItemById(e.currentTarget.id);
+
+  itemToForm(thisItem);
 
 }
 
