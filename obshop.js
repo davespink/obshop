@@ -43,12 +43,10 @@ function getFocusId() {
 }
 
 function getItemObjectById(id) {
-  return Item.getById(id);
+  let i = getIndexById(id);
+  return itemArray[i];
 }
 
-function getItemObjectIndexById(id) {
-  return Item.getIndexById(id);
-}
 
 function getIndexById(thisId) {
   for (let i = 0; i < itemArray.length; i++) {
@@ -165,7 +163,7 @@ function DoNewButton() {
   newItem.name = "new item";
   itemArray.unshift(newItem);
 
-  buttonToForm(newItem);
+  //buttonToForm(newItem);
 
   displayList();
 
@@ -176,8 +174,71 @@ function DoNewButton() {
 
 }
 
-function doSelectType() {
 
+function doSaveBuyFrom() {
+
+  // go through all buy froms and get state of the check 
+  let itBe = getFocusId();
+
+  if (!itBe) {
+    alert("select product");
+    return;
+  }
+  console.log(itBe);
+
+  let itemObject = getItemObjectById(itBe);
+  itemObject.buyFrom = [];
+
+
+  for (const child of buyFromList.children) {
+    if (child.children[0].checked) {
+      let thisButton = child.id;
+      a = thisButton.split("_");
+      itemObject.buyFrom.push(a[1]);
+      console.log(child.id);
+    }
+  }
+}
+
+
+function showBuyFromList() {
+
+  buyFromList.innerHTML = '';
+
+  Global.shopArray.forEach(item => {
+
+    let newButton = document.createElement('button');
+    buyFromList.appendChild(newButton);
+
+    buttonId = "shop_" + item.id;
+    newButton.id = buttonId;
+    // get focus an find the
+    checked = "";
+    newButton.innerHTML = item.name + "&nbsp" + `<input type="checkbox" ` + checked + ` onClick="doSaveBuyFrom()"></input`;
+
+    newButton.classList.add("btn");
+    newButton.classList.add("btn-primary");
+    newButton.classList.add("btn-buyFrom");
+
+    /*
+    newButton.addEventListener("click", function () {
+      alert("this");
+    }
+    );
+*/
+    newButton.style.backgroundColor = item.backgroundColor;
+
+  });
+
+
+}
+
+function doSelectType(id) {
+
+
+
+
+  // save current data first!
   listType = Global.meta.listType;
 
   if (listType == "product") {
@@ -193,22 +254,31 @@ function doSelectType() {
 
   }
 
-  listType = event.currentTarget.id;
+  // show new list type
+  //listType = event.currentTarget.id;
+
+  listType = id;
 
   if (listType == "product") {
     itemArray = Global.productArray.map(obj => ({ ...obj }));
     inStockRow.style.display = 'table-row';
     toBuyRow.style.display = 'table-row';
-    hid(colorRow);  
+    buyFromRow.style.display = 'table-row';
+
+    hid(colorRow);
+
+    showBuyFromList();
+
+
   }
   if (listType == "shop") {
     itemArray = Global.shopArray.map(obj => ({ ...obj }));
-    hid(inStockRow); hid(toBuyRow);
+    hid(inStockRow); hid(toBuyRow); hid(buyFromRow);
     colorRow.style.display = 'table-row';
   }
   if (listType == "section") {
     itemArray = Global.sectionArray.map(obj => ({ ...obj }));
-    hid(inStockRow); hid(toBuyRow);
+    hid(inStockRow); hid(toBuyRow); hid(buyFromRow);
     colorRow.style.display = 'table-row';
   }
 
@@ -248,7 +318,7 @@ function getStamp() {
 
 function displayList() {
 
-  theDiv = divItems;
+  // theDiv = divItems;
   let listType = Global.meta.listType;
 
   let focus = getFocusId();
@@ -257,7 +327,7 @@ function displayList() {
   itemArray.forEach(item => {
 
     let newButton = document.createElement('button');
-    theDiv.appendChild(newButton);
+    divItems.appendChild(newButton);
 
     buttonId = "item_" + item.id;
     newButton.id = buttonId;
@@ -427,6 +497,20 @@ function clearFocus() {
 }
 
 function itemToForm(item) {
+
+
+
+  function setSelectedBuyFrom(bfId) {
+
+    console.log(bfId);
+    let id = "shop_" + bfId;
+    let el = gid(id);
+    let checkBox = el.children[0];
+
+    checkBox.checked = true;
+  }
+
+
   itemName.value = item.name;
   inStock.value = item.inStock;
   toBuy.value = item.toBuy;
@@ -434,9 +518,24 @@ function itemToForm(item) {
     backgroundColor.value = item.backgroundColor;
   if (item.textColor)
     textColor.value = item.textColor;
+
+  showBuyFromList();
+
+  if (item.buyFrom) {
+    if (item.buyFrom.length) {
+      for (let i = 0; i < item.buyFrom.length; i++) {
+        bfId = item.buyFrom[i];
+        setSelectedBuyFrom(bfId);
+      }
+
+    }
+  }
+
 }
 
 function getItemById(id) {
+
+
 
   let a = id.split("_");
   let thisId = a[1];

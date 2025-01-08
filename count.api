@@ -1,0 +1,4 @@
+<script>
+document.write("hello");
+document.write(new Date().getTime());
+</script>

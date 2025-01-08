@@ -98,7 +98,7 @@ is based on default Bootstrap 5 settings.
       </button>
 
       <div class="inputDiv">
-        <table style="margin:auto;width:80%">
+        <table style="margin:auto;width:90%">
           <tr>
             <td>Name</td>
             <td>
@@ -144,21 +144,14 @@ is based on default Bootstrap 5 settings.
           </tr>
 
           <tr id="buyFromRow">
-          
-            <td colspan="2"> 
-              <div id="buyFrom" style="text-align:left">
-BuyFrom
-                <button class="btn-buyFrom">
-                  Walmart&nbsp<input type="checkbox"></button>
-                 
-                  <button class="btn-buyFrom">
-                    Walmart&nbsp<input type="checkbox"></button>
-                    
-                    <button class="btn-buyFrom">
-                      Walmart&nbsp<input type="checkbox"></button>
 
-                      <button class="btn-buyFrom">
-                        Walmart&nbsp<input type="checkbox"></button>
+            <td colspan="2">
+              <div id="buyFrom" style="text-align:left;width:100%">
+                BuyFrom
+
+                <div id="buyFromList">
+
+                </div>
 
               </div>
             </td>
@@ -210,13 +203,13 @@ BuyFrom
         style="width:80%;background-color:transparent; margin:auto;padding-top: 0px;  padding-bottom: 0px;  text-align: center;border: none">
 
         <li><a id="product" class="dropdown-item select-type" style="background-color:var(--ob-success);"
-            onclick="doSelectType()"><span style="color:white">Products</span></a></li>
+            onclick="doSelectType(id)"><span style="color:white">Products</span></a></li>
 
         <li><a id="shop" class="dropdown-item select-type" style="background-color:var(--ob-primary)"
-            onclick="doSelectType()"><span style="color:white">Shops</span></a></li>
+            onclick="doSelectType(id)"><span style="color:white">Shops</span></a></li>
 
         <li><a id="section" class="dropdown-item select-type" style="background-color:var(--ob-dark)"
-            onclick="doSelectType()"> <span style="color:white">Sections</span></a></li>
+            onclick="doSelectType(id)"> <span style="color:white">Sections</span></a></li>
       </ul>
     </div>
 
