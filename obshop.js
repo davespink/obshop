@@ -200,6 +200,28 @@ function doSaveBuyFrom() {
   }
 }
 
+function DoSetColor(inColor) {
+
+  let t = event.currentTarget;
+
+  let color = t.value;
+
+  let buttonId = getFocusButtonId();
+  let a = buttonId.split("_");
+  let itemId = a[1];
+
+  let thisButton = gid(buttonId);
+
+  if (t.id == "inColorBackground") {
+    thisButton.style.backgroundColor = color;
+  }
+
+  else {
+    thisButton.style.color = color;
+
+  }
+
+}
 
 function showBuyFromList() {
 
@@ -233,12 +255,9 @@ function showBuyFromList() {
 
 }
 
-function doSelectType(id) {
 
+function saveListType() {
 
-
-
-  // save current data first!
   listType = Global.meta.listType;
 
   if (listType == "product") {
@@ -254,8 +273,17 @@ function doSelectType(id) {
 
   }
 
+
+}
+
+
+function doSelectType(id) {
+
+  // save current data first!
+  saveListType();
+
   // show new list type
-  //listType = event.currentTarget.id;
+
 
   listType = id;
 
@@ -498,18 +526,17 @@ function clearFocus() {
 
 function itemToForm(item) {
 
-
-
   function setSelectedBuyFrom(bfId) {
 
     console.log(bfId);
     let id = "shop_" + bfId;
     let el = gid(id);
-    let checkBox = el.children[0];
-
-    checkBox.checked = true;
+    if (el) {
+      let checkBox = el.children[0];
+      checkBox.checked = true;
+    }
+    
   }
-
 
   itemName.value = item.name;
   inStock.value = item.inStock;
@@ -519,34 +546,38 @@ function itemToForm(item) {
   if (item.textColor)
     textColor.value = item.textColor;
 
+
+
   showBuyFromList();
+  if (Global.meta.listType == 'product')
+    if (item.buyFrom) {
+      if (item.buyFrom.length) {
+        for (let i = 0; i < item.buyFrom.length; i++) {
+          bfId = item.buyFrom[i];
+          setSelectedBuyFrom(bfId);
+        }
 
-  if (item.buyFrom) {
-    if (item.buyFrom.length) {
-      for (let i = 0; i < item.buyFrom.length; i++) {
-        bfId = item.buyFrom[i];
-        setSelectedBuyFrom(bfId);
       }
-
     }
-  }
 
 }
 
+
+function git(domId) {
+  let a = domId.split("_");
+  return a[1];
+}
+
+
 function getItemById(id) {
 
-
-
-  let a = id.split("_");
-  let thisId = a[1];
-
+  // let a = id.split("_");
+  let thisId = git(id);
 
   for (let i = 0; i < itemArray.length; i++) {
     if (itemArray[i].id == thisId)
       return itemArray[i];
   }
-
-
 
 }
 
@@ -561,6 +592,27 @@ function selectButton(e) {
   itemToForm(thisItem);
 
 }
+
+
+function downloadData() {
+
+  let js = JSON.stringify(Global);
+
+  var data = new Blob([js]);
+  var a = document.getElementById('a'); // <-- this is defined near the download button
+  a.href = URL.createObjectURL(data);
+
+  a.click();
+
+  showAlert("Downloaded " + a.download);
+
+}
+
+
+
+
+
+
 
 
 class obObject {

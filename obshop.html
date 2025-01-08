@@ -9,12 +9,9 @@ More testing.
 
 Tidy up.
 
-Download/backup stuff
+Download/backup stuff - save to disk load from disk, export , print, help, preferences
 
-Demo / slide show?
-
-
-
+Demo / slide show
 
 
 Here are the RGB values for all the predefined button colors in Bootstrap 5:
@@ -64,6 +61,22 @@ is based on default Bootstrap 5 settings.
 
   <script src="obshop.js"></script>
 </head>
+<script>
+
+  async function readText(event) {
+    const file = event.target.files.item(0)
+    const text = await file.text();
+
+    //  document.getElementById("output").innerText = text
+    //alert(text);
+    let js = text;
+    Global = JSON.parse(js);
+
+    showAlert("done get upload");
+
+  }
+</script>>
+
 
 <body>
   <p id="version" style="padding:0px;margin:0px"> </p>
@@ -73,8 +86,24 @@ is based on default Bootstrap 5 settings.
   </button>
 
   <div id="topDiv" class="topDiv fixed">
+
+    <!--
     <button onclick="saveToDisk()">save to disk</button>
     <button onclick="loadFromDisk()">load from disk</button>
+    -->
+    <a id='a' download='JSONDownload.txt' type='text/txt'></a>
+    <button onclick=" 
+                const d = new Date();
+                let text = d.toLocaleDateString() + ` ` + d.toLocaleTimeString();
+            a.download='obShopDownload '  +  text + '.txt';          
+                downloadData()">Download Data</button>
+
+    <button onclick="up.click()">Upload
+      Data</button>
+    <div style="display:none">
+      <input type="file" id="up" onchange="readText(event)" />
+      <pre id="output"></pre>
+    </div>
 
 
     <div class="goDiv">
@@ -88,7 +117,16 @@ is based on default Bootstrap 5 settings.
       <button onclick="DoUpdateButton()" class="bg-light goBadge" style="width:55px;height:55px;padding:0px">
 
         <image src="images/ok.png" style="width:45px; height:45px">
+
       </button>
+
+      <button onclick=" " class="bg-light goBadge" style="width:50px;height:50px;padding:0px;font-size: large;">
+        🔧
+      </button>
+
+
+
+
 
       <button class="bg-light goBadge" onclick="itemUp()" style="float:right">
         <image src="images/up.png" style="width:30px; height:30px">
@@ -164,31 +202,7 @@ is based on default Bootstrap 5 settings.
 
     <script>
 
-      function DoSetColor(inColor) {
 
-        let t = event.currentTarget;
-
-        let color = t.value;
-
-        let buttonId = getFocusButtonId();
-        let a = buttonId.split("_");
-        let itemId = a[1];
-
-
-        let thisButton = gid(buttonId);
-
-        if (t.id == "inColorBackground") {
-          thisButton.style.backgroundColor = color;
-        }
-
-
-        else {
-          thisButton.style.color = color;
-
-        }
-
-
-      }
 
     </script>
 
@@ -235,7 +249,7 @@ is based on default Bootstrap 5 settings.
 
   let itemArray = [];
 
-  // gets save to disk
+
   let Global = {
     meta: {
       listType: "product",
@@ -256,19 +270,18 @@ is based on default Bootstrap 5 settings.
 
   version.innerHTML = getVersion() + " " + user;
 
-  //
-  // this loads some dummy data, comment out loadFromDisk
-  // to use the data
+
 
   const item = {
     id: "",
     name: "",
     description: "unknown",
     inStock: "0",
-    toBuy: "0"
+    toBuy: "0",
+    buyFrom: []
   }
 
-  let a = [];
+  //let a = [];
 
   for (let i = 0; i < 20; i++) {
     test = Object.create(item);
