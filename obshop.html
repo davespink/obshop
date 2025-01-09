@@ -106,34 +106,69 @@ is based on default Bootstrap 5 settings.
     </div>
 
 
-    <div class="goDiv">
-      <button class="bg-light goBadge" onclick="DoDeleteButton()">
-        <image src="images/trash.png" style="width:30px; height:30px">
-      </button>
-      <button class="bg-light goBadge">
-        <image src="images/plus.png" onclick="DoNewButton()" style="width:30px; height:30px">
-      </button>
+    <div class="goDiv" style="text-align: center;">
 
-      <button onclick="DoUpdateButton()" class="bg-light goBadge" style="width:55px;height:55px;padding:0px">
+      <!--
+      <div id="contolButtons"  
+      style="background-color: aliceblue;  width:fit-content">
 
-        <image src="images/ok.png" style="width:45px; height:45px">
-
-      </button>
-
-      <button onclick=" " class="bg-light goBadge" style="width:50px;height:50px;padding:0px;font-size: large;">
-        🔧
-      </button>
-
-
-
-
-
-      <button class="bg-light goBadge" onclick="itemUp()" style="float:right">
+      <button class="bg-light goBadge" onclick="itemDown()" style="transform: rotate(180deg);">
         <image src="images/up.png" style="width:30px; height:30px">
       </button>
-      <button class="bg-light goBadge" onclick="itemDown()" style="float:left;transform: rotate(180deg);">
-        <image src="images/up.png" style="width:30px; height:30px">
-      </button>
+
+        <button class="bg-light goBadge" onclick="DoDeleteButton()">
+          <image src="images/trash.png" style="width:30px; height:30px">
+        </button>
+        <button class="bg-light goBadge">
+          <image src="images/plus.png" onclick="DoNewButton()" style="width:30px; height:30px">
+        </button>
+
+        <button onclick="DoUpdateButton()" class="bg-light goBadge" style="width:55px;height:55px;padding:0px">
+
+          <image src="images/ok.png" style="width:45px; height:45px">
+
+        </button>
+
+        <button onclick=" " class="bg-light goBadge" style="width:50px;height:50px;padding:0px;font-size: large;">
+          🔧
+        </button>
+
+        <button class="bg-light goBadge" onclick="itemUp()"  >
+          <image src="images/up.png" style="width:30px; height:30px">
+        </button>
+      
+
+      </div>
+-->
+      <div id="contolButtons" style="width:100%;margin:auto 0px">
+
+        <button class="bg-light obAction" onclick="itemDown()" style="float:left">
+          👇
+        </button>
+
+        <button class="bg-light obAction" onclick="DoDeleteButton()">
+          🗑️
+        </button>
+
+        <button class="bg-light obAction" onclick="DoNewButton()">
+          ➕
+        </button>
+
+        <button class="bg-light obAction" style="padding:0px" onclick="DoUpdateButton()">
+          ✅ 
+        </button>
+
+
+        <button class="bg-light obAction" onclick="hid(topDiv),vid(secondDiv)">
+          ⚙️
+        </button>
+
+        <button class="bg-light obAction" onclick="itemUp()" style="float:right">
+          ☝️
+        </button>
+
+
+      </div>
 
       <div class="inputDiv">
         <table style="margin:auto;width:90%">
@@ -200,13 +235,6 @@ is based on default Bootstrap 5 settings.
       </div>
     </div>
 
-    <script>
-
-
-
-    </script>
-
-
     <div class="dropdown" style="padding-bottom:0px">
       <button type="button" class="btn btn-primary dropdown-toggle btn-light"
         style="width:90%;padding-bottom: 10px; margin-bottom: 5px; border: 1px solid;  background-color: rgb(118, 153, 35);"
@@ -234,7 +262,19 @@ is based on default Bootstrap 5 settings.
     </div>
 
     <div id="divItems"></div>
+
+
   </div>
+
+
+  <div id="secondDiv" style="display:none"> 
+
+<button onclick="hid(secondDiv);vid(topDiv)">HOME</button>
+
+   </div>
+
+
+
 </body>
 
 
