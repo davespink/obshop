@@ -270,7 +270,6 @@ function saveListType() {
   }
   if (listType == "section") {
     Global.sectionArray = itemArray.map(obj => ({ ...obj }));
-
   }
 
 
@@ -283,8 +282,6 @@ function doSelectType(id) {
   saveListType();
 
   // show new list type
-
-
   listType = id;
 
   if (listType == "product") {
@@ -434,15 +431,14 @@ function loadFromDisk() {
     let json = this.responseText;
     Global = JSON.parse(json);
 
-
-
     listType = Global.meta.listType;
     s = "itemArray = Global." + listType + "Array";
     eval(s);
 
-
     displayList();
     showAlert("done load from disk ");
+
+    doSelectType(listType);
 
   }
   xhttp.send();
