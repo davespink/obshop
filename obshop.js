@@ -1,5 +1,5 @@
 function getVersion() {
-  return ("obShop v1.0f");
+  return ("obShop v1.0h");
 }
 
 
