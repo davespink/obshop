@@ -385,13 +385,47 @@ function displayList() {
 
 }
 
+////////////////////////////
+//  Local storage
+/////////////////////////////
 
+function saveToLocal() {
+  listType = Global.meta.listType;
+  let s = "Global." + listType + "Array = itemArray";
+  eval(s);
+
+  let theData = JSON.stringify(Global);
+
+  localStorage.setItem("obshop", theData);
+
+
+}
+
+
+function loadFromLocal() {
+
+  const theLocalData = localStorage.getItem("obshop");
+
+  Global = JSON.parse(theLocalData);
+
+  listType = Global.meta.listType;
+  s = "itemArray = Global." + listType + "Array";
+  eval(s);
+
+  displayList();
+  showAlert("done load from local");
+
+  doSelectType(listType);
+ 
+}
 
 ////////////////////////////
 //  Disk functions
 ////////////////////////////
 
 function saveToDisk() {
+
+ return saveToLocal();
 
   listType = Global.meta.listType;
   let s = "Global." + listType + "Array = itemArray";
@@ -418,6 +452,9 @@ function saveToDisk() {
 
 
 function loadFromDisk() {
+
+
+  return loadFromLocal();
 
   const xhttp = new XMLHttpRequest();
   let req = "loadfromdisk.php";
@@ -531,7 +568,7 @@ function itemToForm(item) {
       let checkBox = el.children[0];
       checkBox.checked = true;
     }
-    
+
   }
 
   itemName.value = item.name;

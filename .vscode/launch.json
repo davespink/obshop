@@ -10,7 +10,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Open obshop.html",
-            "url": "http://localhost/obshop/obshop.html?user=ME"
+            "url": "http://localhost/incitio.com/obshop/obshop.html?user=ME"
         }
     ]
 }
